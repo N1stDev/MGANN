@@ -15,7 +15,7 @@ class Network
     List<mn.Matrix<double>> weightMatrices;
     List<mn.Vector<double>> biasVectors;
 
-    public Network(int inputLayerSize, int numHiddenLayers)
+    public Network(int inputLayerSize)
     {
         inputLayer = mnd.Vector.Build.Dense(inputLayerSize);
 
@@ -34,7 +34,9 @@ class Network
 
         var weightMatrix = mnd.Matrix.Build.Random(layerSize, previousLayerSize);
         var biasVector = mnd.Vector.Build.Random(layerSize);
+
         weightMatrices.Add(weightMatrix);
+        biasVectors.Add(biasVector);
     }
 
     public void SetIput(mn.Vector<double> input)
@@ -78,6 +80,23 @@ class Program
 {
     static void Main()
     {
-        
+        Network network = new(3);
+
+        network.AddLayer(3);
+        network.AddLayer(3);
+        network.AddLayer(3);
+
+        Vector<double> input = mnd.Vector.Build.Dense(3);
+        Vector<double> output;
+
+        input[0] = 1;
+        input[1] = 2;
+        input[2] = 3;
+
+        network.SetIput(input);
+        output = network.GetOutput();
+
+        Console.WriteLine(output);
+
     }
 }
