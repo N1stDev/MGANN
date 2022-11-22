@@ -1,6 +1,7 @@
 ﻿using mnd = MathNet.Numerics.LinearAlgebra.Double;
 using mn = MathNet.Numerics.LinearAlgebra;
 using MathNet.Numerics.LinearAlgebra.Complex;
+using MathNet.Numerics.LinearAlgebra;
 
 class Network
 {
@@ -12,12 +13,14 @@ class Network
     // - количество нейронов в предыдущем слое
 
     List<mn.Matrix<double>> weightMatrices;
+    List<mn.Vector<double>> biasVectors;
 
     public Network(int inputLayerSize, int numHiddenLayers)
     {
         inputLayer = mnd.Vector.Build.Dense(inputLayerSize);
 
         weightMatrices = new();
+        biasVectors = new();
     }
 
     public void AddLayer(int layerSize)
@@ -30,6 +33,7 @@ class Network
             previousLayerSize = weightMatrices.Last().RowCount;
 
         var weightMatrix = mnd.Matrix.Build.Random(layerSize, previousLayerSize);
+        var biasVector = mnd.Vector.Build.Random(layerSize);
         weightMatrices.Add(weightMatrix);
     }
 
@@ -37,26 +41,43 @@ class Network
     {
         inputLayer = input;
     }
+
+    public Vector<double> GetOutput()
+    {
+        Vector<double> tempOutput;
+
+        tempOutput = Sigmoid(inputLayer);
+
+        for (int i = 0; i < weightMatrices.Count; i++)
+        {
+            tempOutput = Sigmoid(weightMatrices[i] * tempOutput - biasVectors[i]);
+        }
+
+        return tempOutput;
+    }
+
+    Vector<double> Sigmoid(mn.Vector<double> input)
+    {
+        mn.Vector<double> outputVector = input.Clone();
+
+        for (int i = 0; i < outputVector.Count; i++)
+        {
+            outputVector[i] = SigmoidSingle(outputVector[i]);
+        }
+
+        return outputVector;
+
+        double SigmoidSingle(double x)
+        {
+            return 1 / (1 + Math.Exp(x));
+        }
+    }
 }
 
 class Program
 {
     static void Main()
     {
-        var vector1 = mnd.Vector.Build.Dense(3);
-        vector1[0] = 5;
-        vector1[1] = 3;
-        vector1[2] = 1;
         
-        var matrix1 = mnd.Matrix.Build.Dense(3, 3);
-        matrix1[0, 0] = 1;
-        matrix1[1, 0] = 4;
-        matrix1[1, 1] = 3;
-        matrix1[2, 2] = 2;
-        var vector2 = matrix1 * vector1;
-
-        Console.WriteLine(vector1);
-        Console.WriteLine(matrix1);
-        Console.WriteLine(vector2);
     }
 }
