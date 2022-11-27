@@ -2,6 +2,8 @@
 using mn = MathNet.Numerics.LinearAlgebra;
 using MathNet.Numerics.LinearAlgebra.Complex;
 using MathNet.Numerics.LinearAlgebra;
+using System.Data.Common;
+using System.Reflection.Emit;
 
 class Network
 {
@@ -15,12 +17,19 @@ class Network
     List<mn.Matrix<double>> weightMatrices;
     List<mn.Vector<double>> biasVectors;
 
+    List<mn.Vector<double>> deltaVectors;
+
+    List<mn.Vector<double>> outputVectors;
+
     public Network(int inputLayerSize)
     {
         inputLayer = mnd.Vector.Build.Dense(inputLayerSize);
 
         weightMatrices = new();
         biasVectors = new();
+        deltaVectors = new();
+
+        outputVectors = new();
     }
 
     public void AddLayer(int layerSize)
@@ -35,8 +44,13 @@ class Network
         var weightMatrix = mnd.Matrix.Build.Random(layerSize, previousLayerSize);
         var biasVector = mnd.Vector.Build.Random(layerSize);
 
+        var delta_weightMatrix = mnd.Matrix.Build.Dense(layerSize, previousLayerSize);
+        var delta_biasVector = mnd.Vector.Build.Dense(layerSize);
+
         weightMatrices.Add(weightMatrix);
         biasVectors.Add(biasVector);
+        deltaVectors.Add(mnd.Vector.Build.Dense(layerSize));
+        outputVectors.Add(mnd.Vector.Build.Dense(layerSize));
     }
 
     public void SetIput(mn.Vector<double> input)
@@ -53,9 +67,70 @@ class Network
         for (int i = 0; i < weightMatrices.Count; i++)
         {
             tempOutput = Sigmoid(weightMatrices[i] * tempOutput - biasVectors[i]);
+            outputVectors[i] = tempOutput;
         }
 
+        
         return tempOutput;
+    }
+
+    public void BackPropagate(double learningRate, mn.Vector<double> desiredOutput)
+    {
+        // Перебираем нейроны выходного слоя
+        for (int neuron = 0; neuron < deltaVectors.Last().Count; neuron++)
+        {
+            double a = outputVectors.Last()[neuron];
+
+            deltaVectors.Last()[neuron]
+                = SigmoidDeriv(a) * 2 * (desiredOutput[neuron] - a);
+        }
+
+        // Вычисляем дельты для остальных слоев
+        for (int layer = deltaVectors.Count - 2; layer > 0; layer--)
+        {
+            for (int neuron = 0; neuron < deltaVectors[layer].Count; neuron++)
+            {
+                // Для каждого нейрона текущего слоя необходимо вычислить следующюю сумму
+                double sum = 0;
+                for (int i = 0; i < deltaVectors[layer + 1].Count; i++)
+                {
+                    sum += deltaVectors[layer + 1][i] * weightMatrices[layer + 1][i, neuron];
+                }
+
+                double a = outputVectors.Last()[neuron];
+
+                deltaVectors[layer][neuron] = SigmoidDeriv(a) * sum;
+            }
+        }
+
+        // Теперь применяем изменения для всех весов и байасов
+        for (int layer = deltaVectors.Count - 1; layer > 1; layer--)
+        {
+            for (int row = 0; row < weightMatrices[layer].RowCount; row++)
+            {
+                biasVectors[layer][row]
+                        -= learningRate * deltaVectors[layer][row];
+
+                for (int column = 0; column < weightMatrices[layer].ColumnCount; column++)
+                {
+                    weightMatrices[layer][row, column]
+                        -= learningRate * deltaVectors[layer][row] * outputVectors[layer - 1][column];
+                }
+            }
+        }
+
+        // Повторяем вычисления для весов и байасов первого спрятанного слоя
+        for (int row = 0; row < weightMatrices[0].RowCount; row++)
+        {
+            biasVectors[0][row]
+                    -= learningRate * deltaVectors[0][row];
+
+            for (int column = 0; column < weightMatrices[0].ColumnCount; column++)
+            {
+                weightMatrices[0][row, column]
+                -= learningRate * deltaVectors[0][row] * inputLayer[column];
+            }
+        }
     }
 
     Vector<double> Sigmoid(mn.Vector<double> input)
@@ -74,6 +149,11 @@ class Network
             return 1 / (1 + Math.Exp(x));
         }
     }
+
+    double SigmoidDeriv(double input)
+    {
+        return input * (1 - input);
+    }
 }
 
 class Program
@@ -82,21 +162,29 @@ class Program
     {
         Network network = new(3);
 
-        network.AddLayer(3);
-        network.AddLayer(3);
+        network.AddLayer(15);
         network.AddLayer(3);
 
         Vector<double> input = mnd.Vector.Build.Dense(3);
         Vector<double> output;
 
-        input[0] = 1;
-        input[1] = 2;
-        input[2] = 3;
+        input[0] = 0.1;
+        input[1] = 0.2;
+        input[2] = 0.3;
 
         network.SetIput(input);
         output = network.GetOutput();
 
         Console.WriteLine(output);
 
+        network.BackPropagate(0.8, input);
+        network.BackPropagate(0.8, input);
+        network.BackPropagate(0.8, input);
+        network.BackPropagate(0.8, input);
+        
+        
+
+        output = network.GetOutput();
+        Console.WriteLine(output);
     }
 }
