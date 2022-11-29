@@ -76,6 +76,10 @@ class Network
 
     public void BackPropagate(double learningRate, mn.Vector<double> desiredOutput)
     {
+        foreach(var el in weightMatrices)
+        {
+            Console.WriteLine(el);
+        }
         // Перебираем нейроны выходного слоя
         for (int neuron = 0; neuron < deltaVectors.Last().Count; neuron++)
         {
@@ -98,7 +102,7 @@ class Network
                 }
 
                 double a = outputVectors.Last()[neuron];
-
+    
                 deltaVectors[layer][neuron] = SigmoidDeriv(a) * sum;
             }
         }
@@ -158,32 +162,38 @@ class Network
 
 class Program
 {
-    static void Main()
+    static void Main()  // TODO не меняет матрицы
     {
         Network network = new(3);
 
-        network.AddLayer(15);
+
+        network.AddLayer(3);
         network.AddLayer(3);
 
         Vector<double> input = mnd.Vector.Build.Dense(3);
         Vector<double> output;
+        Random random = new();
 
+        for (int i = 0; i < 10; i++)
+        {
+            input[0] = random.NextDouble();
+            input[1] = random.NextDouble();
+            input[2] = random.NextDouble();
+
+            //Console.WriteLine("{0}, {1}, {2}", input[0], input[1], input[2]);
+
+            network.SetIput(input);
+            output = network.GetOutput();
+
+            //Console.WriteLine(output);
+
+            network.BackPropagate(0.1, input);
+
+            
+        }
         input[0] = 0.1;
         input[1] = 0.2;
         input[2] = 0.3;
-
-        network.SetIput(input);
-        output = network.GetOutput();
-
-        Console.WriteLine(output);
-
-        network.BackPropagate(0.8, input);
-        network.BackPropagate(0.8, input);
-        network.BackPropagate(0.8, input);
-        network.BackPropagate(0.8, input);
-        
-        
-
         output = network.GetOutput();
         Console.WriteLine(output);
     }
