@@ -7,194 +7,175 @@ using System.Reflection.Emit;
 
 class Network
 {
-    mn.Vector<double> inputLayer;
+    List<Vector<double>> biases = new();
+    List<Matrix<double>> weights = new();
 
-    // Первое значение размера - количество строк
-    // - количество нейронов в текущем слое
-    // Второе значение размера - количество столбцов
-    // - количество нейронов в предыдущем слое
+    List<Vector<double>> inputs = new();
+    List<Vector<double>> outputs = new();
 
-    List<mn.Matrix<double>> weightMatrices;
-    List<mn.Vector<double>> biasVectors;
+    double step = 0.2;
 
-    List<mn.Vector<double>> deltaVectors;
+    int[] layerSizes;
 
-    List<mn.Vector<double>> outputVectors;
-
-    public Network(int inputLayerSize)
+    public Network(params int[] layerSizes)
     {
-        inputLayer = mnd.Vector.Build.Dense(inputLayerSize);
+        this.layerSizes = layerSizes;
 
-        weightMatrices = new();
-        biasVectors = new();
-        deltaVectors = new();
+        // Самый первый элемент списка -- это входные данные нейросети
+        outputs.Add(mnd.DenseVector.Create(layerSizes[0], 0));
+        
+        for (int i = 1; i < layerSizes.Length; i++)
+        {
+            weights.Add(mnd.DenseMatrix.Create(layerSizes[i], layerSizes[i-1], 0));
 
-        outputVectors = new();
+            biases.Add(mnd.DenseVector.Create(layerSizes[i], 0));
+
+            outputs.Add(mnd.DenseVector.Create(layerSizes[i], 0));
+            inputs.Add(mnd.DenseVector.Create(layerSizes[i], 0));
+        }
     }
 
-    public void AddLayer(int layerSize)
+    public void RunForward(in Vector<double> input)
     {
-        int previousLayerSize = 0;
+        outputs[0] = input;
 
-        if (!weightMatrices.Any())
-            previousLayerSize = inputLayer.Count;
-        else
-            previousLayerSize = weightMatrices.Last().RowCount;
-
-        var weightMatrix = mnd.Matrix.Build.Random(layerSize, previousLayerSize);
-        var biasVector = mnd.Vector.Build.Random(layerSize);
-
-        var delta_weightMatrix = mnd.Matrix.Build.Dense(layerSize, previousLayerSize);
-        var delta_biasVector = mnd.Vector.Build.Dense(layerSize);
-
-        weightMatrices.Add(weightMatrix);
-        biasVectors.Add(biasVector);
-        deltaVectors.Add(mnd.Vector.Build.Dense(layerSize));
-        outputVectors.Add(mnd.Vector.Build.Dense(layerSize));
+        for (int i = 0; i < layerSizes.Length - 1; i++)
+        {
+            inputs[i] = (weights[i] * outputs[i]) + biases[i];
+            outputs[i + 1] = Sigmoid(inputs[i]);
+        }
     }
 
-    public void SetIput(mn.Vector<double> input)
+    public void SetRandom()
     {
-        inputLayer = input;
+        Random rand = new();
+
+        foreach (var v in biases)
+        {
+            for (int i = 0; i < v.Count; i++)
+            {
+                v[i] = (rand.NextDouble() * 2) - 1;
+            }
+        }
+
+        foreach (var m in weights)
+        {
+            for (int y = 0; y < m.RowCount; y++)
+            {
+                for (int x = 0; x < m.ColumnCount; x++)
+                {
+                    m[y,x] = (rand.NextDouble() * 2) - 1;
+                }
+            }
+        }
     }
 
     public Vector<double> GetOutput()
     {
-        Vector<double> tempOutput;
-
-        tempOutput = Sigmoid(inputLayer);
-
-        for (int i = 0; i < weightMatrices.Count; i++)
-        {
-            tempOutput = Sigmoid(weightMatrices[i] * tempOutput - biasVectors[i]);
-            outputVectors[i] = tempOutput;
-        }
-
-        
-        return tempOutput;
+        return outputs.Last().Clone();
     }
-
-    public void BackPropagate(double learningRate, mn.Vector<double> desiredOutput)
-    {
-        foreach(var el in weightMatrices)
-        {
-            Console.WriteLine(el);
-        }
-        // Перебираем нейроны выходного слоя
-        for (int neuron = 0; neuron < deltaVectors.Last().Count; neuron++)
-        {
-            double a = outputVectors.Last()[neuron];
-
-            deltaVectors.Last()[neuron]
-                = SigmoidDeriv(a) * 2 * (desiredOutput[neuron] - a);
-        }
-
-        // Вычисляем дельты для остальных слоев
-        for (int layer = deltaVectors.Count - 2; layer > 0; layer--)
-        {
-            for (int neuron = 0; neuron < deltaVectors[layer].Count; neuron++)
-            {
-                // Для каждого нейрона текущего слоя необходимо вычислить следующюю сумму
-                double sum = 0;
-                for (int i = 0; i < deltaVectors[layer + 1].Count; i++)
-                {
-                    sum += deltaVectors[layer + 1][i] * weightMatrices[layer + 1][i, neuron];
-                }
-
-                double a = outputVectors.Last()[neuron];
     
-                deltaVectors[layer][neuron] = SigmoidDeriv(a) * sum;
-            }
-        }
+    public void BackProp(Vector<double> expectedResult)
+    {
+        var error = outputs.Last() - expectedResult;
 
-        // Теперь применяем изменения для всех весов и байасов
-        for (int layer = deltaVectors.Count - 1; layer > 1; layer--)
+        var gradient = GetFirstGradient(error, inputs.Last());
+
+        /// тут меня смущает вообще всё
+        for (int l = layerSizes.Length - 2; l > 0; l--)
         {
-            for (int row = 0; row < weightMatrices[layer].RowCount; row++)
+            for (int n = 0; n < weights[l].RowCount; n++)
             {
-                biasVectors[layer][row]
-                        -= learningRate * deltaVectors[layer][row];
-
-                for (int column = 0; column < weightMatrices[layer].ColumnCount; column++)
+                for (int w = 0; w < weights[l].ColumnCount; w++)
                 {
-                    weightMatrices[layer][row, column]
-                        -= learningRate * deltaVectors[layer][row] * outputVectors[layer - 1][column];
+                    weights[l][n, w] -= step * gradient[n] * outputs[l][w];
+                    biases[l][n] -= step * gradient[n];
                 }
             }
-        }
 
-        // Повторяем вычисления для весов и байасов первого спрятанного слоя
-        for (int row = 0; row < weightMatrices[0].RowCount; row++)
-        {
-            biasVectors[0][row]
-                    -= learningRate * deltaVectors[0][row];
-
-            for (int column = 0; column < weightMatrices[0].ColumnCount; column++)
+            if (l > 0)
             {
-                weightMatrices[0][row, column]
-                -= learningRate * deltaVectors[0][row] * inputLayer[column];
+                gradient = GetGradient(gradient, weights[l], inputs[l - 1]);
             }
         }
     }
 
-    Vector<double> Sigmoid(mn.Vector<double> input)
+    Vector<double> GetFirstGradient(in Vector<double> error, in Vector<double> vector)
     {
-        mn.Vector<double> outputVector = input.Clone();
+        var result = SigmoidDeriv(vector);
 
-        for (int i = 0; i < outputVector.Count; i++)
+        for (int i = 0; i < vector.Count; i++)
         {
-            outputVector[i] = SigmoidSingle(outputVector[i]);
+            result[i] = error[i] * result[i];
         }
-
-        return outputVector;
-
-        double SigmoidSingle(double x)
-        {
-            return 1 / (1 + Math.Exp(x));
-        }
+        return result;
     }
 
-    double SigmoidDeriv(double input)
+    Vector<double> GetGradient(in Vector<double> prevGradient, in Matrix<double> weight, in Vector<double> vector)
     {
-        return input * (1 - input);
+        var result = vector.Clone();
+        var deriv = SigmoidDeriv(vector);
+
+        for (int i = 0; i < vector.Count; i++)
+        {
+            double sigma = 0;
+            for (int j = 0; j < vector.Count; j++)
+            {
+                sigma += prevGradient[j] * weight[j, i];
+            }
+
+            result[i] = sigma * deriv[i];
+        }
+
+        return result;
+    }
+
+    Vector<double> Sigmoid(in Vector<double> vector)
+    {
+        var result = vector.Clone();
+        for (int i = 0; i < vector.Count; i++)
+        {
+            result[i] = 1 / (1 + Math.Exp(-vector[i]));
+        }
+        return result;
+    }
+
+    Vector<double> SigmoidDeriv(in Vector<double> vector)
+    {
+        var sigm = Sigmoid(vector);
+        var result = vector.Clone();
+        for (int i = 0; i < vector.Count; i++)
+        {
+            result[i] = sigm * (1 - sigm);
+        }
+        return result;
     }
 }
 
 class Program
 {
-    static void Main()  // TODO не меняет матрицы
+    static void Main()
     {
-        Network network = new(3);
+        Random rand = new();
 
+        Network network = new(5, 6, 6, 10);
+        network.SetRandom();
 
-        network.AddLayer(3);
-        network.AddLayer(3);
+        Vector<double> input = mnd.DenseVector.Create(5, 0);
 
-        Vector<double> input = mnd.Vector.Build.Dense(3);
-        Vector<double> output;
-        Random random = new();
-
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < input.Count; i++)
         {
-            input[0] = random.NextDouble();
-            input[1] = random.NextDouble();
-            input[2] = random.NextDouble();
-
-            //Console.WriteLine("{0}, {1}, {2}", input[0], input[1], input[2]);
-
-            network.SetIput(input);
-            output = network.GetOutput();
-
-            //Console.WriteLine(output);
-
-            network.BackPropagate(0.1, input);
-
-            
+            input[i] = (rand.NextDouble() * 2) - 1;
         }
-        input[0] = 0.1;
-        input[1] = 0.2;
-        input[2] = 0.3;
-        output = network.GetOutput();
-        Console.WriteLine(output);
+
+        network.RunForward(input);
+
+        Vector<double> expectedOutput = mnd.DenseVector.Create(10, 0);
+
+        for (int i = 0; i < 10000; i++)
+        {
+            network.BackProp(expectedOutput);
+            Console.WriteLine(network.GetOutput());
+        }
     }
 }
