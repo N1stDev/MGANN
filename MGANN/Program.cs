@@ -13,7 +13,7 @@ class Network
     List<Vector<double>> inputs = new();
     List<Vector<double>> outputs = new();
 
-    double step = 0.2;
+    double step = 0.05;
 
     int[] layerSizes;
 
@@ -81,7 +81,6 @@ class Network
 
         var gradient = GetFirstGradient(error, inputs.Last());
 
-        /// тут меня смущает вообще всё
         for (int l = layerSizes.Length - 2; l > 0; l--)
         {
             for (int n = 0; n < weights[l].RowCount; n++)
@@ -92,11 +91,8 @@ class Network
                     biases[l][n] -= step * gradient[n];
                 }
             }
-
-            if (l > 0)
-            {
-                gradient = GetGradient(gradient, weights[l], inputs[l - 1]);
-            }
+            
+            gradient = GetGradient(gradient, weights[l], inputs[l - 1]);
         }
     }
 
@@ -171,10 +167,13 @@ class Program
         network.RunForward(input);
 
         Vector<double> expectedOutput = mnd.DenseVector.Create(10, 0);
+        expectedOutput[1] = 1;
+        expectedOutput[5] = 1;
 
-        for (int i = 0; i < 10000; i++)
+        for (int i = 0; i < 1000; i++)
         {
             network.BackProp(expectedOutput);
+            network.RunForward(input);
             Console.WriteLine(network.GetOutput());
         }
     }
