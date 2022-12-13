@@ -6,7 +6,7 @@ using NAudio;
 
 namespace MGANN_Spectogramm
 {
-    class Program
+    class Program2
     {       
         /* Функция чтения данных из .WAV файла */
         (double[] audio, int sampleRate) ReadWavMono(string filePath, double multiplier = 16_000)
@@ -29,7 +29,7 @@ namespace MGANN_Spectogramm
             return (audio.ToArray(), sampleRate);
         }
         
-        static void Main()
+        static void Main2()
         {
             var watch = new System.Diagnostics.Stopwatch();
             watch.Start();
@@ -43,7 +43,7 @@ namespace MGANN_Spectogramm
             string MUSIC_PATH = RESOURCE_PATH + "\\music";                  // C:\Users\username\source\repos\*projectname*\resources\music 
             string SPECTROGRAMS_PATH = RESOURCE_PATH + "\\spectrograms";    // C:\Users\username\source\repos\*projectname*\resources\spectrograms
             string[] GENRES = { "\\classical\\", "\\country\\", "\\disco\\", "\\hiphop\\", "\\jazz\\", "\\metal\\", "\\pop\\", "\\reggae\\", "\\rock\\" };
-            var instance = new Program();
+            var instance = new Program2();
 
             foreach (string genre in GENRES)
             {
