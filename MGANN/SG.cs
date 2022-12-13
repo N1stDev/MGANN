@@ -1,12 +1,8 @@
-﻿using System;
-using System.Diagnostics;
-using System.IO; 
-using Spectrogram;
-using NAudio; 
+﻿using Spectrogram;
 
-namespace MGANN_Spectogramm
+namespace MGANN
 {
-    class Program2
+    class Spectogramm
     {       
         /* Функция чтения данных из .WAV файла */
         (double[] audio, int sampleRate) ReadWavMono(string filePath, double multiplier = 16_000)
@@ -29,7 +25,7 @@ namespace MGANN_Spectogramm
             return (audio.ToArray(), sampleRate);
         }
         
-        static void Main2()
+        public void Generate()
         {
             var watch = new System.Diagnostics.Stopwatch();
             watch.Start();
@@ -43,7 +39,7 @@ namespace MGANN_Spectogramm
             string MUSIC_PATH = RESOURCE_PATH + "\\music";                  // C:\Users\username\source\repos\*projectname*\resources\music 
             string SPECTROGRAMS_PATH = RESOURCE_PATH + "\\spectrograms";    // C:\Users\username\source\repos\*projectname*\resources\spectrograms
             string[] GENRES = { "\\classical\\", "\\country\\", "\\disco\\", "\\hiphop\\", "\\jazz\\", "\\metal\\", "\\pop\\", "\\reggae\\", "\\rock\\" };
-            var instance = new Program2();
+            var instance = new Spectogramm();
 
             foreach (string genre in GENRES)
             {
@@ -59,6 +55,7 @@ namespace MGANN_Spectogramm
                         (double[] audio, int sampleRate) = instance.ReadWavMono(current_file);    
                         var sg = new SpectrogramGenerator(sampleRate, fftSize: 4096, stepSize: 500, minFreq: 30, maxFreq: 12000);
                         sg.Add(audio);
+                        sg.SetColormap(Colormap.Grayscale);
                         string ready_file = SPECTROGRAMS_PATH + genre + i.Name;
                                ready_file = ready_file.Substring(0, ready_file.Length - 4);
                                ready_file += ".bmp";

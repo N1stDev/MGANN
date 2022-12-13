@@ -6,6 +6,9 @@ class Program
 {
     static public void Main()
     {
+
+        Spectogramm sp = new();
+        sp.Generate();
         Random rand = new();
 
         Network network = new(5, 6, 6, 10);
