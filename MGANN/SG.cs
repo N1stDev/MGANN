@@ -45,7 +45,10 @@ namespace MGANN
                     try    /* Добавил вот такую конструкцию на случай, если программа попадется на битый файл. */
                     {
                         (double[] audio, int sampleRate) = instance.ReadWavMono(current_file);                  // !!!!!
-                        var sg = new SpectrogramGenerator(sampleRate, fftSize: 4096, stepSize: 500, minFreq: 30, maxFreq: 12000);
+                                                                    // Высота картинки ~ fftsize / 2.
+                                                                    // Ширина картинки обратно пропорциональна stepSize.
+                                                                                    // 1600 => 412, 800 => 824, 400 => 1649. Непонятно ваще, что за формула тут.
+                        var sg = new SpectrogramGenerator(sampleRate, fftSize: 1024, stepSize: 1600, minFreq: 30, maxFreq: 12000);
                         sg.Add(audio);
                         sg.SetColormap(Colormap.Grayscale);
 
