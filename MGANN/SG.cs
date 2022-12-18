@@ -1,9 +1,10 @@
 ﻿using Spectrogram;
+using System.IO;
 
 namespace MGANN
 {
     class Spectogramm
-    {       
+    {
         /* Функция чтения данных из .WAV файла */
         (double[] audio, int sampleRate) ReadWavMono(string filePath, double multiplier = 16_000)
         {
@@ -17,48 +18,43 @@ namespace MGANN
 
             var audio = new List<double>(sampleCount);
             var buffer = new float[sampleRate * channelCount];
-            
+
             while ((samplesRead = afr.Read(buffer, 0, buffer.Length)) > 0)
             {
                 audio.AddRange(buffer.Take(samplesRead).Select(x => x * multiplier));
             }
             return (audio.ToArray(), sampleRate);
         }
-        
-        public void Generate()
+
+        public static void Generate()
         {
             var watch = new System.Diagnostics.Stopwatch();
             watch.Start();
 
-            /* Определение пути к папке проекта. 
-               C:\Users\username\source\repos\*projectname*\resources */
-            string RESOURCE_PATH = Environment.CurrentDirectory;
-                   RESOURCE_PATH = RESOURCE_PATH.Substring(0, RESOURCE_PATH.Length - "bin\\Debug\\net6.0".Length);
-                   RESOURCE_PATH += "resources";
-
-            string MUSIC_PATH = RESOURCE_PATH + "\\music";                  // C:\Users\username\source\repos\*projectname*\resources\music 
-            string SPECTROGRAMS_PATH = RESOURCE_PATH + "\\spectrograms";    // C:\Users\username\source\repos\*projectname*\resources\spectrograms
-            string[] GENRES = { "\\classical\\", "\\country\\", "\\disco\\", "\\hiphop\\", "\\jazz\\", "\\metal\\", "\\pop\\", "\\reggae\\", "\\rock\\" };
             var instance = new Spectogramm();
 
-            foreach (string genre in GENRES)
+            string m_p = new(VARIABLES.MUSIC_PATH);
+            Console.WriteLine(m_p);
+
+            foreach (string genre in VARIABLES.GENRES)
             {
-                DirectoryInfo place = new DirectoryInfo(MUSIC_PATH + genre);    /* Каталога со звуковыми файлами */
-                FileInfo[] files = place.GetFiles();                            /* Получение файлов из каталога */
+                DirectoryInfo place = new DirectoryInfo(VARIABLES.MUSIC_PATH + genre);    /* Каталога со звуковыми файлами */
+                FileInfo[] files = place.GetFiles();                                      /* Получение файлов из каталога */
                 int index = 1;
 
                 foreach (FileInfo i in files)
                 {
-                    string current_file = MUSIC_PATH + genre + i.Name;
+                    string current_file = VARIABLES.MUSIC_PATH + genre + i.Name;
                     try    /* Добавил вот такую конструкцию на случай, если программа попадется на битый файл. */
                     {
-                        (double[] audio, int sampleRate) = instance.ReadWavMono(current_file);    
+                        (double[] audio, int sampleRate) = instance.ReadWavMono(current_file);                  // !!!!!
                         var sg = new SpectrogramGenerator(sampleRate, fftSize: 4096, stepSize: 500, minFreq: 30, maxFreq: 12000);
                         sg.Add(audio);
                         sg.SetColormap(Colormap.Grayscale);
-                        string ready_file = SPECTROGRAMS_PATH + genre + i.Name;
-                               ready_file = ready_file.Substring(0, ready_file.Length - 4);
-                               ready_file += ".bmp";
+
+                        string ready_file = (VARIABLES.SPECTROGRAMS_PATH + genre + i.Name);
+                        ready_file = ready_file.Substring(0, ready_file.Length - 4) + ".bmp";
+
                         sg.SaveImage(ready_file);
                         Console.WriteLine("Создана спектрограмма из файла " + current_file);
                     }
@@ -75,8 +71,9 @@ namespace MGANN
             }
 
             watch.Stop();
-            Console.WriteLine($"Время выполнения: {watch.ElapsedMilliseconds} ms"); 
+            Console.WriteLine($"Время выполнения: {watch.ElapsedMilliseconds} ms");
             return;
-        }   
+        }
     }
-}
+ }     
+    

@@ -4,11 +4,10 @@ using MGANN;
 
 class Program
 {
-    static public void Main()
+    public static void Main()
     {
+        Spectogramm.Generate();
 
-        Spectogramm sp = new();
-        sp.Generate();
         Random rand = new();
 
         Network network = new(5, 6, 6, 10);
