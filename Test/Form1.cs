@@ -5,17 +5,29 @@ namespace Test
         public Form1()
         {
             InitializeComponent();
-            button1.Click += button1_Click;
+           buttonFileAdd.Click += ButtonFileAdd_Click;
+           buttonStart.Click += ButtonStart_Click;
         }
 
-        private void button1_Click(object? sender, EventArgs e)
+        private void ButtonStart_Click(object sender, EventArgs e)
+        {
+           // throw new NotImplementedException();
+            Form1 startForm = this;
+            startForm.Hide();
+            AnalyzingForm analyzingForm = new();
+            analyzingForm.Show();
+        }
+
+        private void ButtonFileAdd_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Не тыкай в меня, я же работаю!");
         }
 
-        private void button1_Click_1(object sender, EventArgs e)
+        private void label1_Click(object sender, EventArgs e)
         {
 
         }
+
+        
     }
 }
