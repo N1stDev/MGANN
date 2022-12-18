@@ -31,7 +31,7 @@ namespace MGANN
             var watch = new System.Diagnostics.Stopwatch();
             watch.Start();
 
-            var instance = new Spectogramm();
+            var instance = new Spectogramm();                                                               // !!!!!
 
             string m_p = new(VARIABLES.MUSIC_PATH);
             Console.WriteLine(m_p);
@@ -44,7 +44,7 @@ namespace MGANN
 
                 foreach (FileInfo i in files)
                 {
-                    string current_file = VARIABLES.MUSIC_PATH + genre + i.Name;
+                    string current_file = place.ToString() + i.Name;
                     try    /* Добавил вот такую конструкцию на случай, если программа попадется на битый файл. */
                     {
                         (double[] audio, int sampleRate) = instance.ReadWavMono(current_file);                  // !!!!!
