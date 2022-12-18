@@ -362,5 +362,6 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 
-# Heavy .wav files
+# Heavy data files
 *.wav
+*.bmp

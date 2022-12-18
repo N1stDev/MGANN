@@ -33,9 +33,6 @@ namespace MGANN
 
             var instance = new Spectogramm();                                                               // !!!!!
 
-            string m_p = new(VARIABLES.MUSIC_PATH);
-            Console.WriteLine(m_p);
-
             foreach (string genre in VARIABLES.GENRES)
             {
                 DirectoryInfo place = new DirectoryInfo(VARIABLES.MUSIC_PATH + genre);    /* Каталога со звуковыми файлами */
