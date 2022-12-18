@@ -52,7 +52,7 @@ namespace MGANN
                         sg.Add(audio);
                         sg.SetColormap(Colormap.Grayscale);
 
-                        string ready_file = (VARIABLES.SPECTROGRAMS_PATH + genre + i.Name);
+                        string ready_file = VARIABLES.SPECTROGRAMS_PATH + genre + i.Name;
                         ready_file = ready_file.Substring(0, ready_file.Length - 4) + ".bmp";
 
                         sg.SaveImage(ready_file);
