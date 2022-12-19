@@ -9,5 +9,7 @@ class Program
         Network network = new(210532, 6, 6, 10);
 
         network.Train();
+
+        network.Test();
     }
 }

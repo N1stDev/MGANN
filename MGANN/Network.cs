@@ -1,4 +1,5 @@
 ﻿using MathNet.Numerics.LinearAlgebra;
+using System;
 using mnd = MathNet.Numerics.LinearAlgebra.Double;
 
 namespace MGANN
@@ -50,6 +51,26 @@ namespace MGANN
                     Vector<double> expectedResult = mnd.DenseVector.Create(10, 0);
                     expectedResult[genreIndex] = 1;
                     BackProp(converter.imageVec, expectedResult);
+                }
+                genreIndex++;
+            }
+        }
+
+        public void Test()
+        {
+            ImageConverter converter = new();
+            int genreIndex = 0;
+            foreach (string genre in VARIABLES.GENRES)
+            {
+                DirectoryInfo place = new DirectoryInfo(VARIABLES.SPECTROGRAMS_PATH + genre);
+                FileInfo[] files = place.GetFiles();
+                foreach (FileInfo i in files)
+                {
+                    string imagePath = place.ToString() + i.Name;
+                    converter.convert(imagePath);
+                    RunForward(converter.imageVec);
+
+                    Console.WriteLine(outputs.Last());
                 }
                 genreIndex++;
             }
