@@ -31,6 +31,28 @@ namespace MGANN
                 outputs.Add(mnd.DenseVector.Create(layerSizes[i], 0));
                 inputs.Add(mnd.DenseVector.Create(layerSizes[i], 0));
             }
+
+            this.SetRandom();
+        }
+
+        public void Train()
+        {
+            ImageConverter converter = new();
+            int genreIndex = 0;
+            foreach (string genre in VARIABLES.GENRES)
+            {
+                DirectoryInfo place = new DirectoryInfo(VARIABLES.SPECTROGRAMS_PATH + genre);
+                FileInfo[] files = place.GetFiles();
+                foreach (FileInfo i in files)
+                {
+                    string imagePath = place.ToString() + i.Name;
+                    converter.convert(imagePath);
+                    Vector<double> expectedResult = mnd.DenseVector.Create(10, 0);
+                    expectedResult[genreIndex] = 1;
+                    BackProp(converter.imageVec, expectedResult);
+                }
+                genreIndex++;
+            }
         }
 
         public void RunForward(in Vector<double> input)
@@ -73,8 +95,9 @@ namespace MGANN
             return outputs.Last().Clone();
         }
 
-        public void BackProp(Vector<double> expectedResult)
+        public void BackProp(Vector<double> inputLayer, Vector<double> expectedResult)
         {
+            RunForward(inputLayer);
             var error = outputs.Last() - expectedResult;
 
             var gradient = GetFirstGradient(error, inputs.Last());

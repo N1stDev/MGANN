@@ -1,33 +1,39 @@
-﻿using SFML.Graphics;
+﻿using MathNet.Numerics.LinearAlgebra.Complex;
+using SFML.Graphics;
+using mnd = MathNet.Numerics.LinearAlgebra.Double;
+using MathNet.Numerics.LinearAlgebra;
 
 namespace MGANN
 {
      class ImageConverter
      {
-        string path = "C:\\Users\\timot\\Desktop\\gradient.png";
-        int n;
-        uint[,] imageArr;
+        int n, m;
+        public Vector<double> imageVec;
 
         public ImageConverter()
         {
-            n = 100;
-            imageArr = new uint[n, n];
+            n = 412;
+            m = 511;
+            int k = n * m;
+            imageVec = mnd.DenseVector.Create(k, 0);
         }
 
-        public uint[,] convert()
+        public void convert(string path)
         {
             Image img = new(path);
 
-            for (uint x=0; x<1270; x++)
+            for (uint x=0; x<n; x++)
             {
-                for (uint y=0; y<1; y++)
+                for (uint y=0; y<m; y++)
                 {
-                    imageArr[x, y] = img.GetPixel(x, y).ToInteger();
-                    Console.WriteLine(imageArr[x, y]);
+                    int r = img.GetPixel(x, y).R;
+                    int g = img.GetPixel(x, y).G;
+                    int b = img.GetPixel(x, y).B;
+                    double res = 256 * 256 * r + 256 * g + b;
+                    res /= 256 * 256 * 255 + 256 * 255 + 255;
+                    imageVec[(int)x * n + (int)y] = res;
                 }
             }
-
-            return imageArr;
         }
      }
 }
