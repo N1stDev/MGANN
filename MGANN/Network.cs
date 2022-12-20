@@ -13,7 +13,7 @@ namespace MGANN
         List<Vector<double>> inputs = new();
         List<Vector<double>> outputs = new();
 
-        double step = 0.05;
+        double step = 0.0001;
 
         int[] layerSizes;
 
