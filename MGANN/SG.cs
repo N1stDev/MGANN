@@ -3,7 +3,7 @@ using System.IO;
 
 namespace MGANN
 {
-    class Spectogramm
+    class Spectrogramm
     {
         /* Функция чтения данных из .WAV файла */
         (double[] audio, int sampleRate) ReadWavMono(string filePath, double multiplier = 16_000)
@@ -31,7 +31,7 @@ namespace MGANN
             var watch = new System.Diagnostics.Stopwatch();
             watch.Start();
 
-            var instance = new Spectogramm();                                                               // !!!!!
+            var instance = new Spectrogramm();                                                               // !!!!!
 
             foreach (string genre in VARIABLES.GENRES)
             {
