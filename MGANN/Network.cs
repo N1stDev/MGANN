@@ -1,5 +1,6 @@
 ﻿using MathNet.Numerics.LinearAlgebra;
 using System;
+using System.ComponentModel;
 using mnd = MathNet.Numerics.LinearAlgebra.Double;
 
 namespace MGANN
@@ -59,7 +60,7 @@ namespace MGANN
         public void Test()
         {
             ImageConverter converter = new();
-            int genreIndex = 0;
+            int genreIndex = 1;
             foreach (string genre in VARIABLES.GENRES)
             {
                 DirectoryInfo place = new DirectoryInfo(VARIABLES.SPECTROGRAMS_PATH + genre);
@@ -70,7 +71,7 @@ namespace MGANN
                     converter.convert(imagePath);
                     RunForward(converter.imageVec);
 
-                    Console.WriteLine(outputs.Last());
+                    Console.WriteLine($"{outputs.Last().MaximumIndex()+1}, {genreIndex}");
                 }
                 genreIndex++;
             }
@@ -157,9 +158,17 @@ namespace MGANN
             for (int i = 0; i < vector.Count; i++)
             {
                 double sigma = 0;
-                for (int j = 0; j < vector.Count; j++)
+                for (int j = 0; j < prevGradient.Count; j++)
                 {
-                    sigma += prevGradient[j] * weight[j, i];
+                    try
+                    {
+                        sigma += prevGradient[j] * weight[j, i];
+                    }
+                    catch {
+                        Console.WriteLine($"{j}, {i}, {weight.ColumnCount}, {weight.RowCount}, {vector.Count}");
+                        throw;
+                    }
+                    
                 }
 
                 result[i] = sigma * deriv[i];

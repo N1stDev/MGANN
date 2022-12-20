@@ -12,8 +12,8 @@ namespace MGANN
 
         public ImageConverter()
         {
-            n = 412;
-            m = 511;
+            n = 103;
+            m = 128;
             int k = n * m;
             imageVec = mnd.DenseVector.Create(k, 0);
         }
@@ -26,12 +26,8 @@ namespace MGANN
             {
                 for (uint y=0; y<m; y++)
                 {
-                    int r = img.GetPixel(x, y).R;
-                    int g = img.GetPixel(x, y).G;
-                    int b = img.GetPixel(x, y).B;
-                    double res = 256 * 256 * r + 256 * g + b;
-                    res /= 256 * 256 * 255 + 256 * 255 + 255;
-                    imageVec[(int)x * n + (int)y] = res;
+                    double r = img.GetPixel(x, y).R;
+                    imageVec[(int)x * n + (int)y] = r / 255;
                 }
             }
         }

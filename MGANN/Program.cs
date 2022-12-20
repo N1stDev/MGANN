@@ -6,7 +6,8 @@ class Program
 {
     public static void Main()
     {
-        Network network = new(210532, 6, 6, 10);
+        //Spectogramm.Generate();
+        Network network = new(13184, 40, 60, 40, 10);
 
         network.Train();
 
