@@ -13,7 +13,7 @@ namespace MGANN
         List<Vector<double>> inputs = new();
         List<Vector<double>> outputs = new();
 
-        double step = 0.0001;
+        double step = 0.5;
 
         int[] layerSizes;
 
@@ -39,6 +39,7 @@ namespace MGANN
 
         public void Train()
         {
+            List<(Vector<double>, Vector<double> )> cases = new();
             ImageConverter converter = new();
             int genreIndex = 0;
             foreach (string genre in VARIABLES.GENRES)
@@ -51,9 +52,15 @@ namespace MGANN
                     converter.convert(imagePath);
                     Vector<double> expectedResult = mnd.DenseVector.Create(10, 0);
                     expectedResult[genreIndex] = 1;
-                    BackProp(converter.imageVec, expectedResult);
+                    cases.Add((converter.imageVec, expectedResult));
                 }
                 genreIndex++;
+            }
+            Random rand = new();
+            var shuffledCases = cases.OrderBy(i => rand.Next()).ToList();
+            foreach (var el in shuffledCases)
+            {
+                BackProp(el.Item1, el.Item2);
             }
         }
 
@@ -61,6 +68,8 @@ namespace MGANN
         {
             ImageConverter converter = new();
             int genreIndex = 1;
+            double success = 0;
+            double count = 0;
             foreach (string genre in VARIABLES.GENRES)
             {
                 DirectoryInfo place = new DirectoryInfo(VARIABLES.SPECTROGRAMS_PATH + genre);
@@ -71,10 +80,15 @@ namespace MGANN
                     converter.convert(imagePath);
                     RunForward(converter.imageVec);
 
-                    Console.WriteLine($"{outputs.Last().MaximumIndex()+1}, {genreIndex}");
+                    count++;
+                    if (outputs.Last().MaximumIndex() + 1 == genreIndex)
+                    {
+                        success++;
+                    }
                 }
                 genreIndex++;
             }
+            Console.WriteLine($"Accuracy: {Math.Round(success / count * 100, 2)}%");
         }
 
         public void RunForward(in Vector<double> input)
