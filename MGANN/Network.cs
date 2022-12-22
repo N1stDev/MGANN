@@ -13,7 +13,7 @@ namespace MGANN
         List<Vector<double>> inputs = new();
         List<Vector<double>> outputs = new();
 
-        double step = 0.5;
+        double step = 0.001;
 
         int[] layerSizes;
 
@@ -58,9 +58,18 @@ namespace MGANN
             }
             Random rand = new();
             var shuffledCases = cases.OrderBy(i => rand.Next()).ToList();
+            int step = 0;
+            Vector<double> error = mnd.DenseVector.Create(10, 0);
             foreach (var el in shuffledCases)
             {
-                BackProp(el.Item1, el.Item2);
+                if (step % 10 == 0 && step != 0)
+                {
+                    BackProp(error.Divide(10));
+                    error.Clear();
+                }
+                RunForward(el.Item1);
+                error += outputs.Last() - el.Item2;
+                step++;
             }
         }
 
@@ -131,11 +140,8 @@ namespace MGANN
             return outputs.Last().Clone();
         }
 
-        public void BackProp(Vector<double> inputLayer, Vector<double> expectedResult)
+        public void BackProp(Vector<double> error)
         {
-            RunForward(inputLayer);
-            var error = outputs.Last() - expectedResult;
-
             var gradient = GetFirstGradient(error, inputs.Last());
 
             for (int l = layerSizes.Length - 2; l > 0; l--)
