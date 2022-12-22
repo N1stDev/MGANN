@@ -8,7 +8,7 @@ namespace MGANN
         public static readonly string RESOURCE_PATH = Environment.CurrentDirectory;
         public static readonly string MUSIC_PATH;
         public static readonly string SPECTROGRAMS_PATH;
-        public static readonly string[]? GENRES = {"", "", "", "", "", "", "", "", ""};
+        public static readonly string[]? GENRES = {"", "", "", "", "", "", "", "", "", ""};
 
         static VARIABLES()
         {
