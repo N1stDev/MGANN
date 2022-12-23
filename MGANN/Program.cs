@@ -6,12 +6,12 @@ class Program
 {
     public static void Main()
     {
-        //Spectrogramm.Generate();
-        //return;
-        Network network = new(VARIABLES.XSIZE * VARIABLES.YSIZE, 100, 100, 10);
+        Spectrogramm.Generate();
 
-        network.Train();
+        //Network network = new(VARIABLES.XSIZE * VARIABLES.YSIZE, 10, 10);
 
-        network.Test();
+        //network.Train();
+
+        //network.Test();
     }
 }
