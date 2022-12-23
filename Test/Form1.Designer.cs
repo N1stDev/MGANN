@@ -31,6 +31,7 @@
             this.label_MGANN = new System.Windows.Forms.Label();
             this.buttonFileAdd = new System.Windows.Forms.Button();
             this.buttonStart = new System.Windows.Forms.Button();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.SuspendLayout();
             // 
             // label_MGANN
@@ -45,7 +46,7 @@
             this.label_MGANN.TabIndex = 0;
             this.label_MGANN.Text = "MGANN";
             this.label_MGANN.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.label_MGANN.Click += new System.EventHandler(this.label1_Click);
+            this.label_MGANN.Click += new System.EventHandler(this.Label1_Click);
             // 
             // buttonFileAdd
             // 
@@ -60,6 +61,7 @@
             this.buttonFileAdd.TabIndex = 1;
             this.buttonFileAdd.Text = "Загрузить файл";
             this.buttonFileAdd.UseVisualStyleBackColor = false;
+            this.buttonFileAdd.Click += new System.EventHandler(this.ButtonFileAdd_Click);
             // 
             // buttonStart
             // 
@@ -74,6 +76,11 @@
             this.buttonStart.TabIndex = 2;
             this.buttonStart.Text = "Начать анализ";
             this.buttonStart.UseVisualStyleBackColor = false;
+            this.buttonStart.Click += new System.EventHandler(this.ButtonStart_Click);
+            // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.FileName = "openFileDialog1";
             // 
             // Form1
             // 
@@ -96,5 +103,6 @@
         private Label label_MGANN;
         private Button buttonFileAdd;
         private Button buttonStart;
+        private OpenFileDialog openFileDialog1;
     }
 }

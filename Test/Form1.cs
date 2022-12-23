@@ -5,12 +5,13 @@ namespace Test
         public Form1()
         {
             InitializeComponent();
-           buttonFileAdd.Click += ButtonFileAdd_Click;
-           buttonStart.Click += ButtonStart_Click;
+          
+           
         }
 
         private void ButtonStart_Click(object sender, EventArgs e)
         {
+
            // throw new NotImplementedException();
             Form1 startForm = this;
             startForm.Hide();
@@ -20,12 +21,17 @@ namespace Test
 
         private void ButtonFileAdd_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Не тыкай в меня, я же работаю!");
+            openFileDialog1.ShowDialog();
+            string filename = openFileDialog1.FileName;
+          //  тут должна быть дальнейшая реализация
+          // что делать с файлом выбранным
+            
+            
         }
 
-        private void label1_Click(object sender, EventArgs e)
+        private void Label1_Click(object sender, EventArgs e)
         {
-
+            //добавить защиту от дурака/чапкина
         }
 
         
