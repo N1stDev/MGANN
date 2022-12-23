@@ -13,7 +13,7 @@ namespace MGANN
         List<Vector<double>> inputs = new();
         List<Vector<double>> outputs = new();
 
-        double step = 0.001;
+        double step = 0.3;
 
         int[] layerSizes;
 
@@ -39,13 +39,16 @@ namespace MGANN
 
         public void Train()
         {
-            List<(Vector<double>, Vector<double> )> cases = new();
+            // Таблица соответстия спектрограмм ответам
+            List<(Vector<double>, Vector<double>)> cases = new();
             ImageConverter converter = new();
             int genreIndex = 0;
+
             foreach (string genre in VARIABLES.GENRES)
             {
                 DirectoryInfo place = new DirectoryInfo(VARIABLES.SPECTROGRAMS_PATH + genre);
                 FileInfo[] files = place.GetFiles();
+
                 foreach (FileInfo i in files)
                 {
                     string imagePath = place.ToString() + i.Name;
@@ -56,10 +59,12 @@ namespace MGANN
                 }
                 genreIndex++;
             }
+
             Random rand = new();
             var shuffledCases = cases.OrderBy(i => rand.Next()).ToList();
             int step = 0;
             Vector<double> error = mnd.DenseVector.Create(10, 0);
+
             foreach (var el in shuffledCases)
             {
                 if (step % 10 == 0 && step != 0)
@@ -67,6 +72,7 @@ namespace MGANN
                     BackProp(error.Divide(10));
                     error.Clear();
                 }
+
                 RunForward(el.Item1);
                 error += outputs.Last() - el.Item2;
                 step++;

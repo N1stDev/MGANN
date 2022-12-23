@@ -13,7 +13,7 @@ namespace MGANN
         public ImageConverter()
         {
             n = 103;
-            m = 128;
+            m = 45;
             int k = n * m;
             imageVec = mnd.DenseVector.Create(k, 0);
         }
@@ -27,7 +27,7 @@ namespace MGANN
                 for (uint y=0; y<m; y++)
                 {
                     double r = img.GetPixel(x, y).R;
-                    imageVec[(int)x * n + (int)y] = r / 255;
+                    imageVec[(int)x + (int)y * n] = r / 255;
                 }
             }
         }

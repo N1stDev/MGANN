@@ -7,7 +7,7 @@ class Program
     public static void Main()
     {
         //Spectrogramm.Generate();
-        Network network = new(13184, 10, 10, 10, 10);
+        Network network = new(4635, 200, 100, 50, 10);
 
         network.Train();
 
