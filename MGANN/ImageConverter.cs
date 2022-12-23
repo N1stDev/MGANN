@@ -7,15 +7,11 @@ namespace MGANN
 {
      class ImageConverter
      {
-        int n, m;
         public Vector<double> imageVec;
 
         public ImageConverter()
         {
-            n = VARIABLES.XSIZE;
-            m = VARIABLES.YSIZE;
-            int k = n * m;
-            imageVec = mnd.DenseVector.Create(k, 0);
+            imageVec = mnd.DenseVector.Create(VARIABLES.XSIZE * VARIABLES.YSIZE, 0);
         }
 
         public void convert(string path)
