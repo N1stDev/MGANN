@@ -42,7 +42,7 @@
             this.label_MGANN.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(166)))), ((int)(((byte)(203)))), ((int)(((byte)(166)))));
             this.label_MGANN.Location = new System.Drawing.Point(0, 0);
             this.label_MGANN.Name = "label_MGANN";
-            this.label_MGANN.Size = new System.Drawing.Size(800, 105);
+            this.label_MGANN.Size = new System.Drawing.Size(804, 105);
             this.label_MGANN.TabIndex = 0;
             this.label_MGANN.Text = "MGANN";
             this.label_MGANN.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -87,7 +87,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(173)))), ((int)(((byte)(153)))), ((int)(((byte)(101)))));
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(804, 444);
             this.Controls.Add(this.buttonStart);
             this.Controls.Add(this.buttonFileAdd);
             this.Controls.Add(this.label_MGANN);

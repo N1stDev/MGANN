@@ -29,39 +29,54 @@
         private void InitializeComponent()
         {
             this.labelAnalyze = new System.Windows.Forms.Label();
-            this.analyzingProgressBar = new System.Windows.Forms.ProgressBar();
+            this.answerLabel = new System.Windows.Forms.Label();
+            this.timeLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // labelAnalyze
             // 
-            this.labelAnalyze.AutoSize = true;
-            this.labelAnalyze.Font = new System.Drawing.Font("Georgia", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.labelAnalyze.Location = new System.Drawing.Point(14, 12);
+            this.labelAnalyze.Dock = System.Windows.Forms.DockStyle.Top;
+            this.labelAnalyze.Font = new System.Drawing.Font("Georgia", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.labelAnalyze.Location = new System.Drawing.Point(0, 0);
             this.labelAnalyze.Name = "labelAnalyze";
-            this.labelAnalyze.Size = new System.Drawing.Size(323, 39);
+            this.labelAnalyze.Size = new System.Drawing.Size(605, 56);
             this.labelAnalyze.TabIndex = 0;
-            this.labelAnalyze.Text = "Прогресс нализа";
-            this.labelAnalyze.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.labelAnalyze.Text = "Анализ";
+            this.labelAnalyze.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // analyzingProgressBar
+            // answerLabel
             // 
-            this.analyzingProgressBar.ForeColor = System.Drawing.SystemColors.Info;
-            this.analyzingProgressBar.Location = new System.Drawing.Point(357, 14);
-            this.analyzingProgressBar.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.analyzingProgressBar.Name = "analyzingProgressBar";
-            this.analyzingProgressBar.Size = new System.Drawing.Size(297, 37);
-            this.analyzingProgressBar.TabIndex = 1;
-            this.analyzingProgressBar.Click += new System.EventHandler(this.progressBar1_Click);
+            this.answerLabel.AutoSize = true;
+            this.answerLabel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.answerLabel.Font = new System.Drawing.Font("Georgia", 26.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.answerLabel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.answerLabel.Location = new System.Drawing.Point(12, 153);
+            this.answerLabel.Name = "answerLabel";
+            this.answerLabel.Size = new System.Drawing.Size(218, 41);
+            this.answerLabel.TabIndex = 2;
+            this.answerLabel.Text = "Результат:";
+            // 
+            // timeLabel
+            // 
+            this.timeLabel.AutoSize = true;
+            this.timeLabel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.timeLabel.Font = new System.Drawing.Font("Georgia", 26.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.timeLabel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.timeLabel.Location = new System.Drawing.Point(12, 226);
+            this.timeLabel.Name = "timeLabel";
+            this.timeLabel.Size = new System.Drawing.Size(315, 41);
+            this.timeLabel.TabIndex = 3;
+            this.timeLabel.Text = "Время анализа:";
             // 
             // AnalyzingForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(166)))), ((int)(((byte)(203)))), ((int)(((byte)(166)))));
-            this.ClientSize = new System.Drawing.Size(914, 647);
-            this.Controls.Add(this.analyzingProgressBar);
+            this.ClientSize = new System.Drawing.Size(605, 426);
+            this.Controls.Add(this.timeLabel);
+            this.Controls.Add(this.answerLabel);
             this.Controls.Add(this.labelAnalyze);
-            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "AnalyzingForm";
             this.Text = "MGANN";
             this.ResumeLayout(false);
@@ -72,6 +87,7 @@
         #endregion
 
         private Label labelAnalyze;
-        private ProgressBar analyzingProgressBar;
+        private Label answerLabel;
+        private Label timeLabel;
     }
 }

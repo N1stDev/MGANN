@@ -17,9 +17,11 @@ namespace Test
             InitializeComponent();
         }
 
-        private void progressBar1_Click(object sender, EventArgs e)
+        private void ViewAnswer (object sender, EventArgs e)
         {
-
+            string answerGenerName;
+            //добавить переименование лэйбла в результат
+            // answerLabel.Text =
         }
     }
 }
