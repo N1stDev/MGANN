@@ -48,7 +48,7 @@ namespace MGANN
                                                                     // Высота картинки ~ fftsize / 2.
                                                                     // Ширина картинки обратно пропорциональна stepSize.
                                                                                     // 1600 => 412, 800 => 824, 400 => 1649. Непонятно ваще, что за формула тут.
-                        var sg = new SpectrogramGenerator(sampleRate, fftSize: 256, stepSize: 6400, minFreq: 100, maxFreq: 4000);
+                        var sg = new SpectrogramGenerator(sampleRate, fftSize: 2048, stepSize: 12800, minFreq: 100, maxFreq: 4000);
                         sg.Add(audio);
                         sg.SetColormap(Colormap.Grayscale);
 

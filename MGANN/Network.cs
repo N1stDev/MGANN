@@ -13,7 +13,7 @@ namespace MGANN
         List<Vector<double>> inputs = new();
         List<Vector<double>> outputs = new();
 
-        double step = 0.3;
+        double learningRate = 0.3;
 
         int[] layerSizes;
 
@@ -52,7 +52,7 @@ namespace MGANN
                 foreach (FileInfo i in files)
                 {
                     string imagePath = place.ToString() + i.Name;
-                    converter.convert(imagePath);
+
                     Vector<double> expectedResult = mnd.DenseVector.Create(10, 0);
                     expectedResult[genreIndex] = 1;
                     cases.Add((converter.imageVec, expectedResult));
@@ -60,22 +60,27 @@ namespace MGANN
                 genreIndex++;
             }
 
-            Random rand = new();
-            var shuffledCases = cases.OrderBy(i => rand.Next()).ToList();
-            int step = 0;
-            Vector<double> error = mnd.DenseVector.Create(10, 0);
-
-            foreach (var el in shuffledCases)
+            for (int i = 0; i < 10; i++)
             {
-                if (step % 10 == 0 && step != 0)
-                {
-                    BackProp(error.Divide(10));
-                    error.Clear();
-                }
+                Random rand = new();
+                var shuffledCases = cases.OrderBy(i => rand.Next()).ToList();
+                int step = 0;
+                Vector<double> error = mnd.DenseVector.Create(10, 0);
 
-                RunForward(el.Item1);
-                error += outputs.Last() - el.Item2;
-                step++;
+                foreach (var el in shuffledCases)
+                {
+                    if (step % 10 == 0 && step != 0)
+                    {
+                        BackProp(error.Divide(10));
+                        error.Clear();
+                    }
+
+                    learningRate /= 2;
+
+                    RunForward(el.Item1);
+                    error += outputs.Last() - el.Item2;
+                    step++;
+                }
             }
         }
 
@@ -125,7 +130,8 @@ namespace MGANN
             {
                 for (int i = 0; i < v.Count; i++)
                 {
-                    v[i] = (rand.NextDouble() * 2) - 1;
+                    //v[i] = (rand.NextDouble() * 2) - 1;
+                    v[i] = 0;
                 }
             }
 
@@ -135,7 +141,8 @@ namespace MGANN
                 {
                     for (int x = 0; x < m.ColumnCount; x++)
                     {
-                        m[y, x] = (rand.NextDouble() * 2) - 1;
+                        //m[y, x] = (rand.NextDouble() * 2) - 1;
+                        m[y, x] = 0;
                     }
                 }
             }
@@ -156,8 +163,8 @@ namespace MGANN
                 {
                     for (int w = 0; w < weights[l].ColumnCount; w++)
                     {
-                        weights[l][n, w] -= step * gradient[n] * outputs[l][w];
-                        biases[l][n] -= step * gradient[n];
+                        weights[l][n, w] -= learningRate * gradient[n] * outputs[l][w];
+                        biases[l][n] -= learningRate * gradient[n];
                     }
                 }
 
@@ -186,15 +193,7 @@ namespace MGANN
                 double sigma = 0;
                 for (int j = 0; j < prevGradient.Count; j++)
                 {
-                    try
-                    {
-                        sigma += prevGradient[j] * weight[j, i];
-                    }
-                    catch {
-                        Console.WriteLine($"{j}, {i}, {weight.ColumnCount}, {weight.RowCount}, {vector.Count}");
-                        throw;
-                    }
-                    
+                    sigma += prevGradient[j] * weight[j, i];
                 }
 
                 result[i] = sigma * deriv[i];
