@@ -34,6 +34,9 @@ namespace Test
             //добавить защиту от дурака/чапкина
         }
 
-        
+        private void ButtonFileAdd_MouseMove(object sender, MouseEventArgs e)
+        {
+            
+        }
     }
 }

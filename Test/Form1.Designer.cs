@@ -62,6 +62,7 @@
             this.buttonFileAdd.Text = "Загрузить файл";
             this.buttonFileAdd.UseVisualStyleBackColor = false;
             this.buttonFileAdd.Click += new System.EventHandler(this.ButtonFileAdd_Click);
+            this.buttonFileAdd.MouseMove += new System.Windows.Forms.MouseEventHandler(this.ButtonFileAdd_MouseMove);
             // 
             // buttonStart
             // 
