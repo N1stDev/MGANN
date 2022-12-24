@@ -11,17 +11,30 @@ namespace Test
 
         private void ButtonStart_Click(object sender, EventArgs e)
         {
-            Form1 startForm = this;
-            startForm.Hide();
-            AnalyzingForm analyzingForm = new();
-            analyzingForm.Show();
+            if (FormsSharedData.isFileLoaded == true)
+            {
+                Form1 startForm = this;
+                startForm.Hide();
+                AnalyzingForm analyzingForm = new();
+                analyzingForm.Show();
+            }
+            else
+            {
+                MessageBox.Show("Загрузите файл", "Ошибка");
+            }
         }
 
         private void ButtonFileAdd_Click(object sender, EventArgs e)
         {
             openFileDialog1.ShowDialog();
-            FormsSharedData.loadedFilePath = openFileDialog1.FileName;
-            labelFilePath.Text = FormsSharedData.loadedFilePath;
+
+            if (openFileDialog1.FileName != "")
+            {
+                FormsSharedData.loadedFilePath = openFileDialog1.FileName;
+                labelFilePath.Text = FormsSharedData.loadedFilePath;
+                FormsSharedData.isFileLoaded = true;
+            }
+            
         }
 
         private void оПроектеToolStripMenuItem_Click(object sender, EventArgs e)
@@ -37,7 +50,7 @@ namespace Test
 
         public void OpenUrl(string url)
         {
-            System.Diagnostics.Process.Start(url);
+            Process.Start(url);
         }
     }
 }

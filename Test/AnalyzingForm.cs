@@ -29,9 +29,8 @@ namespace Test
         private void AnalyzingForm_Load(object sender, EventArgs e)
         {
             var convolutionLayer = new ConvolutionLayer(16, 3);
-            var maxPoolingLayer = new MaxPoolingLayer();
-            var maxPoolingLayer = new MaxPoolingLayer();
-            var softMaxLayer = new SoftMaxLayer();
+            var maxPoolingLayer = new MaxPoolingLayer(2);
+            //var softMaxLayer = new SoftMaxLayer(5776, 10);
         }
 
         private void AnalyzingForm_FormClosed(object sender, FormClosedEventArgs e)
