@@ -82,6 +82,7 @@
             this.Controls.Add(this.labelAnalyze);
             this.Name = "AnalyzingForm";
             this.Text = "MGANN";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.AnalyzingForm_FormClosed);
             this.Load += new System.EventHandler(this.AnalyzingForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

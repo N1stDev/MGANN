@@ -32,28 +32,33 @@
             this.buttonFileAdd = new System.Windows.Forms.Button();
             this.buttonStart = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.labelFilePath = new System.Windows.Forms.Label();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.информацияToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.оПроектеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.репозиторийGitHubToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // label_MGANN
             // 
             this.label_MGANN.CausesValidation = false;
             this.label_MGANN.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label_MGANN.Font = new System.Drawing.Font("Matura MT Script Capitals", 48F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.label_MGANN.Font = new System.Drawing.Font("Microsoft Sans Serif", 48F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.label_MGANN.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(185)))), ((int)(((byte)(156)))), ((int)(((byte)(121)))));
-            this.label_MGANN.Location = new System.Drawing.Point(0, 0);
+            this.label_MGANN.Location = new System.Drawing.Point(0, 24);
             this.label_MGANN.Name = "label_MGANN";
             this.label_MGANN.Size = new System.Drawing.Size(675, 105);
             this.label_MGANN.TabIndex = 0;
             this.label_MGANN.Text = "MGANN";
             this.label_MGANN.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.label_MGANN.Click += new System.EventHandler(this.Label1_Click);
             // 
             // buttonFileAdd
             // 
             this.buttonFileAdd.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(158)))), ((int)(((byte)(128)))), ((int)(((byte)(92)))));
             this.buttonFileAdd.Cursor = System.Windows.Forms.Cursors.Hand;
             this.buttonFileAdd.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonFileAdd.Font = new System.Drawing.Font("Showcard Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.buttonFileAdd.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.buttonFileAdd.ForeColor = System.Drawing.Color.White;
             this.buttonFileAdd.Location = new System.Drawing.Point(36, 203);
             this.buttonFileAdd.Name = "buttonFileAdd";
@@ -62,14 +67,13 @@
             this.buttonFileAdd.Text = "Загрузить файл";
             this.buttonFileAdd.UseVisualStyleBackColor = false;
             this.buttonFileAdd.Click += new System.EventHandler(this.ButtonFileAdd_Click);
-            this.buttonFileAdd.MouseMove += new System.Windows.Forms.MouseEventHandler(this.ButtonFileAdd_MouseMove);
             // 
             // buttonStart
             // 
             this.buttonStart.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(158)))), ((int)(((byte)(128)))), ((int)(((byte)(92)))));
             this.buttonStart.Cursor = System.Windows.Forms.Cursors.Hand;
             this.buttonStart.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonStart.Font = new System.Drawing.Font("Showcard Gothic", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.buttonStart.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.buttonStart.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.buttonStart.Location = new System.Drawing.Point(36, 282);
             this.buttonStart.Name = "buttonStart";
@@ -81,7 +85,51 @@
             // 
             // openFileDialog1
             // 
-            this.openFileDialog1.FileName = "openFileDialog1";
+            this.openFileDialog1.Filter = "Звуоквые файлы wav|*.wav";
+            this.openFileDialog1.InitialDirectory = ".";
+            // 
+            // labelFilePath
+            // 
+            this.labelFilePath.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.labelFilePath.AutoSize = true;
+            this.labelFilePath.Location = new System.Drawing.Point(12, 433);
+            this.labelFilePath.Name = "labelFilePath";
+            this.labelFilePath.Size = new System.Drawing.Size(145, 15);
+            this.labelFilePath.TabIndex = 3;
+            this.labelFilePath.Text = "Нет загруженного файла";
+            // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.информацияToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(675, 24);
+            this.menuStrip1.TabIndex = 4;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // информацияToolStripMenuItem
+            // 
+            this.информацияToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.оПроектеToolStripMenuItem,
+            this.репозиторийGitHubToolStripMenuItem});
+            this.информацияToolStripMenuItem.Name = "информацияToolStripMenuItem";
+            this.информацияToolStripMenuItem.Size = new System.Drawing.Size(93, 20);
+            this.информацияToolStripMenuItem.Text = "Информация";
+            // 
+            // оПроектеToolStripMenuItem
+            // 
+            this.оПроектеToolStripMenuItem.Name = "оПроектеToolStripMenuItem";
+            this.оПроектеToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
+            this.оПроектеToolStripMenuItem.Text = "О проекте";
+            this.оПроектеToolStripMenuItem.Click += new System.EventHandler(this.оПроектеToolStripMenuItem_Click);
+            // 
+            // репозиторийGitHubToolStripMenuItem
+            // 
+            this.репозиторийGitHubToolStripMenuItem.Name = "репозиторийGitHubToolStripMenuItem";
+            this.репозиторийGitHubToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
+            this.репозиторийGitHubToolStripMenuItem.Text = "Репозиторий GitHub";
+            this.репозиторийGitHubToolStripMenuItem.Click += new System.EventHandler(this.репозиторийGitHubToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -91,13 +139,19 @@
             this.BackgroundImage = global::Test.Properties.Resources.Mushroom_style_2;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.ClientSize = new System.Drawing.Size(675, 457);
+            this.Controls.Add(this.labelFilePath);
             this.Controls.Add(this.buttonStart);
             this.Controls.Add(this.buttonFileAdd);
             this.Controls.Add(this.label_MGANN);
+            this.Controls.Add(this.menuStrip1);
             this.DoubleBuffered = true;
+            this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
             this.Text = "MGANN";
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -108,5 +162,10 @@
         private Button buttonFileAdd;
         private Button buttonStart;
         private OpenFileDialog openFileDialog1;
+        private Label labelFilePath;
+        private MenuStrip menuStrip1;
+        private ToolStripMenuItem информацияToolStripMenuItem;
+        private ToolStripMenuItem оПроектеToolStripMenuItem;
+        private ToolStripMenuItem репозиторийGitHubToolStripMenuItem;
     }
 }

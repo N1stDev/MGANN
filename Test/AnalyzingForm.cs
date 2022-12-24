@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using MGANN;
+
 namespace Test
 {
     public partial class AnalyzingForm : Form
@@ -26,7 +28,12 @@ namespace Test
 
         private void AnalyzingForm_Load(object sender, EventArgs e)
         {
+            
+        }
 
+        private void AnalyzingForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            TempData.mainForm.Show();
         }
     }
 }

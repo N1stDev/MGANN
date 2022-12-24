@@ -4,7 +4,7 @@ using mnd = MathNet.Numerics.LinearAlgebra.Double;
 
 namespace MGANN
 {
-    class CNN
+    public class CNN
     {
         void ForwardPropogation()
         {
@@ -22,7 +22,7 @@ namespace MGANN
         }
     }
 
-    class ConvolutionLayer
+    public class ConvolutionLayer
     {
         int kernelNum, kernelSize;
         List<Matrix<double>> kernels;
@@ -144,7 +144,7 @@ namespace MGANN
         }
     }
 
-    class MaxPoolingLayer
+    public class MaxPoolingLayer
     {
         int kernelSize;
         List<Matrix<double>> image;
@@ -219,7 +219,7 @@ namespace MGANN
 
     }
 
-    class SoftMaxLayer
+    public class SoftMaxLayer
     {
         public SoftMaxLayer()
         {
