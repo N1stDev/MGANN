@@ -1,4 +1,5 @@
 ﻿using MathNet.Numerics.LinearAlgebra;
+using System.ComponentModel.DataAnnotations;
 using mnd = MathNet.Numerics.LinearAlgebra.Double;
 
 namespace MGANN
@@ -76,11 +77,26 @@ namespace MGANN
                 var patch = el.Item1;
                 int h = el.Item2;
                 int w = el.Item3;
+                List<double> sumList = new();
                 for (int i = 0; i < kernelNum; i++)
                 {
-                    convolutionOutput[i] = patch * kernels[i];
+                    Matrix<double> multiplyRes = patch * kernels[i];
+                    double sum = 0;
+                    for (int r = 0; r < multiplyRes.RowCount; r++)
+                    {
+                        for (int c = 0; c < multiplyRes.ColumnCount; c++)
+                        {
+                            sum += multiplyRes[r, c];
+                        }
+                    }
+
+                    sumList.Add(sum);
                 }
-                double[] 
+
+                for (int i = 0; i < convolutionOutput[h].ColumnCount; i++)
+                {
+                    convolutionOutput[h][w, i] = sumList[i];
+                }
             }
 
             return convolutionOutput;
@@ -130,19 +146,70 @@ namespace MGANN
 
     public class MaxPoolingLayer
     {
-        public MaxPoolingLayer()
-        {
+        int kernelSize;
+        List<Matrix<double>> image;
 
+        public MaxPoolingLayer(int kernelSize)
+        {
+            this.kernelSize = kernelSize;
         }
 
-        void PatchesGenerator()
+        List<(List<Matrix<double>>, int, int)> PatchesGenerator(List<Matrix<double>> image)
         {
+            int outputHeight = image.Count / kernelSize;
+            int outputWidth = image[0].RowCount / kernelSize;
+            int num = image[0].ColumnCount;
+            this.image = image;
 
+            List<(List<Matrix<double>>, int, int)> patches = new();
+
+            for (int i = 0; i < outputHeight; i++)
+            {
+                for (int j = 0; j < outputWidth; j++)
+                {
+                    List<Matrix<double>> patch = new(kernelSize);
+                    for (int k = 0; k < kernelSize; k++)
+                    {
+                        for (int l = 0; l < kernelSize; l++)
+                        {
+                            for (int m = 0; m < num; m++)
+                            {
+                                patch[k][l, m] = image[i * kernelSize + k][j * kernelSize + l, m];
+                            }
+                            
+                        }
+                    }
+                    patches.Add((patch, i, j));
+                }
+            }
+
+            return patches;
         }
 
-        void ForwardPropogation()
+        List<Matrix<double>> ForwardPropogation(List<Matrix<double>> image)
         {
+            int imageHeight = image.Count;
+            int imageWidth = image[0].RowCount;
+            int kernelNum = image[0].ColumnCount;
 
+            List<Matrix<double>> MaxPoolingOutput = new();
+
+            for (int i = 0; i < imageHeight / kernelSize; i++)
+            {
+                MaxPoolingOutput.Add(mnd.DenseMatrix.Create(imageWidth / kernelSize, kernelNum, 0));
+            }
+
+            var patches = PatchesGenerator(image);
+
+            foreach (var el in patches)
+            {
+                var patch = el.Item1;
+                int h = el.Item2;
+                int w = el.Item3;
+                //max_pooling_output[h,w] = np.amax(patch, axis=(0,1))
+            }
+
+            return MaxPoolingOutput;
         }
 
         void BackPropogation()
