@@ -20,8 +20,8 @@ namespace Test
         private void ButtonFileAdd_Click(object sender, EventArgs e)
         {
             openFileDialog1.ShowDialog();
-            TempData.loadedFilePath = openFileDialog1.FileName;
-            labelFilePath.Text = TempData.loadedFilePath;
+            FormsSharedData.loadedFilePath = openFileDialog1.FileName;
+            labelFilePath.Text = FormsSharedData.loadedFilePath;
         }
 
         private void îÏðîåêòåToolStripMenuItem_Click(object sender, EventArgs e)

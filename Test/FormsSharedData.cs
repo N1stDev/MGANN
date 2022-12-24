@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Test
 {
-    static internal class TempData
+    static internal class FormsSharedData
     {
         public static Form1 mainForm = new();
 
