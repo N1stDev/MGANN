@@ -23,5 +23,10 @@ namespace Test
             //добавить переименование лэйбла в результат
             // answerLabel.Text =
         }
+
+        private void AnalyzingForm_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

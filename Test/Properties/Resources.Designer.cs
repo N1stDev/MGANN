@@ -59,5 +59,15 @@ namespace Test.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Mushroom_style_2 {
+            get {
+                object obj = ResourceManager.GetObject("Mushroom_style_2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
     }
 }

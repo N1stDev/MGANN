@@ -39,10 +39,10 @@
             this.label_MGANN.CausesValidation = false;
             this.label_MGANN.Dock = System.Windows.Forms.DockStyle.Top;
             this.label_MGANN.Font = new System.Drawing.Font("Matura MT Script Capitals", 48F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label_MGANN.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(166)))), ((int)(((byte)(203)))), ((int)(((byte)(166)))));
+            this.label_MGANN.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(185)))), ((int)(((byte)(156)))), ((int)(((byte)(121)))));
             this.label_MGANN.Location = new System.Drawing.Point(0, 0);
             this.label_MGANN.Name = "label_MGANN";
-            this.label_MGANN.Size = new System.Drawing.Size(804, 105);
+            this.label_MGANN.Size = new System.Drawing.Size(675, 105);
             this.label_MGANN.TabIndex = 0;
             this.label_MGANN.Text = "MGANN";
             this.label_MGANN.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -50,7 +50,7 @@
             // 
             // buttonFileAdd
             // 
-            this.buttonFileAdd.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(166)))), ((int)(((byte)(203)))), ((int)(((byte)(166)))));
+            this.buttonFileAdd.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(158)))), ((int)(((byte)(128)))), ((int)(((byte)(92)))));
             this.buttonFileAdd.Cursor = System.Windows.Forms.Cursors.Hand;
             this.buttonFileAdd.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonFileAdd.Font = new System.Drawing.Font("Showcard Gothic", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
@@ -65,7 +65,7 @@
             // 
             // buttonStart
             // 
-            this.buttonStart.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(166)))), ((int)(((byte)(203)))), ((int)(((byte)(166)))));
+            this.buttonStart.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(158)))), ((int)(((byte)(128)))), ((int)(((byte)(92)))));
             this.buttonStart.Cursor = System.Windows.Forms.Cursors.Hand;
             this.buttonStart.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.buttonStart.Font = new System.Drawing.Font("Showcard Gothic", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
@@ -86,11 +86,14 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(173)))), ((int)(((byte)(153)))), ((int)(((byte)(101)))));
-            this.ClientSize = new System.Drawing.Size(804, 444);
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(200)))), ((int)(((byte)(145)))));
+            this.BackgroundImage = global::Test.Properties.Resources.Mushroom_style_2;
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.ClientSize = new System.Drawing.Size(675, 457);
             this.Controls.Add(this.buttonStart);
             this.Controls.Add(this.buttonFileAdd);
             this.Controls.Add(this.label_MGANN);
+            this.DoubleBuffered = true;
             this.Name = "Form1";
             this.Text = "MGANN";
             this.ResumeLayout(false);
