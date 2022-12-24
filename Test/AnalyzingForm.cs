@@ -28,5 +28,10 @@ namespace Test
         {
 
         }
+
+        private void AnalyzingForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            TempData.mainForm.Show();
+        }
     }
 }

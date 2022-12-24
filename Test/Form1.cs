@@ -1,3 +1,5 @@
+using System.Diagnostics;
+
 namespace Test
 {
     public partial class Form1 : Form
@@ -5,14 +7,10 @@ namespace Test
         public Form1()
         {
             InitializeComponent();
-          
-           
         }
 
         private void ButtonStart_Click(object sender, EventArgs e)
         {
-
-           // throw new NotImplementedException();
             Form1 startForm = this;
             startForm.Hide();
             AnalyzingForm analyzingForm = new();
@@ -22,21 +20,24 @@ namespace Test
         private void ButtonFileAdd_Click(object sender, EventArgs e)
         {
             openFileDialog1.ShowDialog();
-            string filename = openFileDialog1.FileName;
-          //  тут должна быть дальнейшая реализация
-          // что делать с файлом выбранным
-            
-            
+            TempData.loadedFilePath = openFileDialog1.FileName;
+            labelFilePath.Text = TempData.loadedFilePath;
         }
 
-        private void Label1_Click(object sender, EventArgs e)
+        private void оПроектеToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //добавить защиту от дурака/чапкина
+            MessageBox.Show("Проект был подготовлен командой \"Жизненный Цикл\"" +
+                "в качестве курсовой работы", "О проекте");
         }
 
-        private void ButtonFileAdd_MouseMove(object sender, MouseEventArgs e)
+        private void репозиторийGitHubToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            
+            OpenUrl("https://google.com");
+        }
+
+        public void OpenUrl(string url)
+        {
+            System.Diagnostics.Process.Start(url);
         }
     }
 }
