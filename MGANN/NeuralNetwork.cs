@@ -1,23 +1,57 @@
 ﻿using MathNet.Numerics.LinearAlgebra;
+using System;
 using mnd = MathNet.Numerics.LinearAlgebra.Double;
+
 
 namespace MGANN
 {
     public class CNN
     {
-        void ForwardPropogation()
+        List<object> layers2 = new();
+        Tuple<ConvolutionLayer, MaxPoolingLayer, SoftMaxLayer> layers;
+        public CNN()
         {
+            layers = new(new ConvolutionLayer(16, 3), new MaxPoolingLayer(2), new SoftMaxLayer(1296, 10));
 
         }
-
-        void BackPropogation()
+        (Vector<double>, double, int) RunForward(Matrix<double> image, int label)
         {
+            Matrix<double> output1 = image.Divide(255);
+            List<Matrix<double>> output2 = layers.Item1.ForwardPropogation(output1);
+            List<Matrix<double>> output3 = layers.Item2.ForwardPropogation(output2);
+            Vector<double> output4 = layers.Item3.ForwardPropogation(output3);
 
+            double loss = -1 * Math.Log(output4[label]);
+            int success = 0;
+            if (output4.MaximumIndex() == label)
+            {
+                success = 1;
+            }
+
+            return (output4, loss, success);
         }
 
-        void Train()
+        List<Matrix<double>> BackPropogation(Vector<double> gradient, double alpha)
         {
+            Vector<double> gradientBack1 = gradient;
+            List<Matrix<double>> gradientBack2 = layers.Item3.BackPropogation(gradientBack1, alpha);
+            List<Matrix<double>> gradientBack3 = layers.Item2.BackPropogation(gradientBack2);
+            List<Matrix<double>> gradientBack4 = layers.Item1.BackPropogation(gradientBack3, alpha);
 
+            return gradientBack4;
+        }
+
+        public (double, int) Train(Matrix<double> image, int label, double alpha=0.05)
+        {
+            (Vector<double>, double, int) resForward = RunForward(image, label);
+
+            Vector<double> gradient = mnd.DenseVector.Create(10, 0);
+
+            gradient[label] = -1 / resForward.Item1[label];
+
+            List<Matrix<double>> gradientBack = BackPropogation(gradient, alpha);
+
+            return (resForward.Item2, resForward.Item3);
         }
     }
 
@@ -31,6 +65,7 @@ namespace MGANN
         {
             this.kernelNum = kernelNum;
             this.kernelSize = kernelSize;
+            kernels = new();
             SetKernelsRandom();
         }
 
@@ -60,7 +95,7 @@ namespace MGANN
             return patches;
         }
 
-        List<Matrix<double>> ForwardPropogation(Matrix<double> image)
+        public List<Matrix<double>> ForwardPropogation(Matrix<double> image)
         {
             int imageHeight = image.RowCount;
             int imageWidth = image.ColumnCount;
@@ -101,7 +136,7 @@ namespace MGANN
             return convolutionOutput;
         }
 
-        List<Matrix<double>> BackPropogation(List<Matrix<double>> dE_dY, double alpha)
+        public List<Matrix<double>> BackPropogation(List<Matrix<double>> dE_dY, double alpha)
         {
             List<Matrix<double>> dE_dK = new();
             for (int i = 0; i < kernelNum; i++) dE_dK.Add(mnd.DenseMatrix.Create(kernelSize, kernelSize, 0));
@@ -136,7 +171,7 @@ namespace MGANN
                 {
                     for (int k = 0; k < kernelSize; k++)
                     {
-                        kernels[i][j, k] = 2 * rand.NextDouble() - 1;
+                        kernels[i][j, k] = (2 * rand.NextDouble() - 1) / Math.Pow(kernelSize, 2);
                     }
                 }
             }
@@ -185,7 +220,7 @@ namespace MGANN
             return patches;
         }
 
-        List<Matrix<double>> ForwardPropogation(List<Matrix<double>> image)
+        public List<Matrix<double>> ForwardPropogation(List<Matrix<double>> image)
         {
             int imageHeight = image.Count;
             int imageWidth = image[0].RowCount;
@@ -231,7 +266,7 @@ namespace MGANN
             return MaxPoolingOutput;
         }
 
-        List<Matrix<double>> BackPropogation(List<Matrix<double>> dE_dY)
+        public List<Matrix<double>> BackPropogation(List<Matrix<double>> dE_dY)
         {
             List<Matrix<double>> dE_dK = new();
             for (int i = 0; i < image.Count; i++)
@@ -291,6 +326,9 @@ namespace MGANN
     {
         Matrix<double> Weights;
         Vector<double> Biases;
+        (int, int, int) size;
+        Vector<double> inputVector;
+        Vector<double> outputVector;
 
         public SoftMaxLayer(int inputCount, int outputCount)
         {
@@ -299,14 +337,108 @@ namespace MGANN
             SetWeightsRandom(inputCount);
         }
 
-        void ForwardPropogation()
+        public Vector<double> ForwardPropogation(List<Matrix<double>> image)
         {
+            size = (image.Count, image[0].RowCount, image[0].ColumnCount);
+            Vector<double> imageVector = mnd.DenseVector.Create(size.Item1 * size.Item2 * size.Item3, 0);
+            int vectorIndex = 0;
 
+            for (int i = 0; i < size.Item1; i++)
+            {
+                for (int j = 0; j < size.Item2; j++)
+                {
+                    for (int k = 0; k < size.Item3; k++)
+                    {
+                        imageVector[vectorIndex] = image[i][j, k];
+                        vectorIndex++;
+                    }
+                }
+            }
+
+            inputVector = imageVector;
+
+            Vector<double> firstOutput = imageVector * Weights + Biases;
+            outputVector = firstOutput;
+
+            Vector<double> softMaxOutput = firstOutput;
+
+            double divider = 0;
+
+            for (int i = 0; i < softMaxOutput.Count; i++)
+            {
+                softMaxOutput[i] = Math.Exp(softMaxOutput[i]);
+                divider += softMaxOutput[i];
+            }
+
+            for (int i = 0; i < softMaxOutput.Count; i++)
+            {
+                softMaxOutput[i] /= divider;
+            }
+
+            return softMaxOutput;
         }
 
-        void BackPropogation()
+        public List<Matrix<double>> BackPropogation(Vector<double> dE_dY, double alpha)
         {
+            for (int i = 0; i < dE_dY.Count; i++)
+            {
+                if (dE_dY[i] == 0)
+                {
+                    continue;
+                }
 
+                Vector<double> transformationEq = mnd.DenseVector.Create(outputVector.Count, 0);
+                double totalSum = 0;
+                for (int j = 0; j < transformationEq.Count; j++)
+                {
+                    transformationEq[j] = Math.Exp(outputVector[j]);
+                    totalSum += transformationEq[j];
+
+                }
+
+                Vector<double> dY_dZ = transformationEq.Multiply(-transformationEq[i]).Divide(Math.Pow(totalSum, 2));
+                dY_dZ[i] = transformationEq[i] * (totalSum - transformationEq[i]) / Math.Pow(totalSum, 2);
+
+                Vector<double> dZ_dW = inputVector;
+                int dZ_dB = 1;
+                Matrix<double> dZ_dX = Weights;
+
+                Vector<double> dE_dZ = dY_dZ.Multiply(dE_dY[i]);
+
+                Matrix<double> dZ_dW_Matrix = mnd.DenseMatrix.Create(dZ_dW.Count, 1, 0);
+
+                for (int j = 0; j < dZ_dW_Matrix.RowCount; j++)
+                {
+                    dZ_dW_Matrix[j, 0] = dZ_dW[j];
+                }
+
+                Matrix<double> dE_dZ_Matrix = mnd.DenseMatrix.Create(1, dE_dZ.Count, 0);
+                for (int j = 0; j < dE_dZ_Matrix.ColumnCount; j++)
+                {
+                    dE_dZ_Matrix[0, j] = dE_dZ[j];
+                }
+                Matrix<double> dE_dW = dZ_dW_Matrix * dE_dZ_Matrix;
+
+                Vector<double> dE_dB = dE_dZ * dZ_dB;
+
+                Matrix<double> dE_dZ_Matrix2 = mnd.DenseMatrix.Create(dE_dZ.Count, 1, 0);
+                for (int j = 0; j < dE_dZ_Matrix2.RowCount; j++)
+                {
+                    dE_dZ_Matrix2[j, 0] = dE_dZ[j];
+                }
+
+                Matrix<double> dE_dX = dZ_dX * dE_dZ_Matrix2;
+
+                Weights -= dE_dW.Multiply(alpha);
+                Biases -= dE_dB.Multiply(alpha);
+
+                List<Matrix<double>> dE_dX_reshape = new();
+                dE_dX.Add(dE_dX);
+
+                return dE_dX_reshape;
+            }
+            
+            return new List<Matrix<double>>();
         }
 
         void SetWeightsRandom(int inputCount)
