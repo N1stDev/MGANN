@@ -11,7 +11,7 @@ namespace MGANN
         Tuple<ConvolutionLayer, MaxPoolingLayer, SoftMaxLayer> layers;
         public CNN()
         {
-            layers = new(new ConvolutionLayer(16, 3), new MaxPoolingLayer(2), new SoftMaxLayer(1296, 10));
+            layers = new(new ConvolutionLayer(16, 3), new MaxPoolingLayer(2), new SoftMaxLayer(65536, 10));
 
         }
         (Vector<double>, double, int) RunForward(Matrix<double> image, int label)
@@ -41,7 +41,7 @@ namespace MGANN
             return gradientBack4;
         }
 
-        public (double, int) Train(Matrix<double> image, int label, double alpha=0.05)
+        public (double, int) Train(Matrix<double> image, int label, double alpha=0.0001)
         {
             (Vector<double>, double, int) resForward = RunForward(image, label);
 
@@ -100,10 +100,10 @@ namespace MGANN
             int imageHeight = image.RowCount;
             int imageWidth = image.ColumnCount;
             int listLen = imageHeight - kernelSize + 1;
-            List<Matrix<double>> convolutionOutput = new List<Matrix<double>>(listLen);
+            List<Matrix<double>> convolutionOutput = new();
             for (int i = 0; i < listLen; i++)
             {
-                convolutionOutput[i] = mnd.DenseMatrix.Create(imageWidth-kernelSize+1, kernelNum, 0);
+                convolutionOutput.Add(mnd.DenseMatrix.Create(imageWidth-kernelSize+1, kernelNum, 0));
             }
             var patches = PatchesGenerator(image);
             foreach (var el in patches)
@@ -123,7 +123,6 @@ namespace MGANN
                             sum += multiplyRes[r, c];
                         }
                     }
-
                     sumList.Add(sum);
                 }
 
@@ -201,9 +200,10 @@ namespace MGANN
             {
                 for (int j = 0; j < outputWidth; j++)
                 {
-                    List<Matrix<double>> patch = new(kernelSize);
+                    List<Matrix<double>> patch = new();
                     for (int k = 0; k < kernelSize; k++)
                     {
+                        patch.Add(mnd.DenseMatrix.Create(kernelSize, num, 0));
                         for (int l = 0; l < kernelSize; l++)
                         {
                             for (int m = 0; m < num; m++)
@@ -243,7 +243,7 @@ namespace MGANN
                 List<double> maxList = new();
                 for (int index = 0; index < patch[0].ColumnCount; index++)
                 {
-                    double max = -99999;
+                    double max = -9999;
                     for (int i = 0; i < patch.Count; i++)
                     {
                         for (int j = 0; j < patch[0].RowCount; j++)
@@ -367,6 +367,7 @@ namespace MGANN
             for (int i = 0; i < softMaxOutput.Count; i++)
             {
                 softMaxOutput[i] = Math.Exp(softMaxOutput[i]);
+
                 divider += softMaxOutput[i];
             }
 
@@ -433,7 +434,19 @@ namespace MGANN
                 Biases -= dE_dB.Multiply(alpha);
 
                 List<Matrix<double>> dE_dX_reshape = new();
-                dE_dX.Add(dE_dX);
+                int counter = 0;
+                for (int j = 0; j < size.Item1; j++)
+                {
+                    dE_dX_reshape.Add(mnd.DenseMatrix.Create(size.Item2, size.Item3, 0));
+                    for (int k = 0; k < size.Item2; k++)
+                    {
+                        for (int l = 0; l < size.Item3; l++)
+                        {
+                            dE_dX_reshape[j][k, l] = dE_dX[counter, 0];
+                            counter++;
+                        }
+                    }
+                }
 
                 return dE_dX_reshape;
             }
