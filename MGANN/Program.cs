@@ -17,7 +17,7 @@ class Program
             cases.Add((data.cases[i], data.answers[i]));
         }
         
-        for (int epoch = 0; epoch < 4; epoch++)
+        for (int epoch = 0; epoch < 5; epoch++)
         {
             Console.WriteLine($"Epoch #{epoch+1}");
             var shuffledCases = cases.OrderBy(i => random.Next()).ToList();

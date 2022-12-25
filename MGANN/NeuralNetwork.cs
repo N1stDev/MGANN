@@ -7,7 +7,6 @@ namespace MGANN
 {
     public class CNN
     {
-        List<object> layers2 = new();
         Tuple<ConvolutionLayer, MaxPoolingLayer, SoftMaxLayer> layers;
         public CNN()
         {
@@ -52,6 +51,21 @@ namespace MGANN
             List<Matrix<double>> gradientBack = BackPropogation(gradient, alpha);
 
             return (resForward.Item2, resForward.Item3);
+        }
+
+        public void SaveConfiguration()
+        {
+            // сохранить конфигурацию
+        }
+
+        public void UploadConfiguration()
+        {
+            // загрузить конфигурацию
+        }
+
+        public void DetectGenre()
+        {
+            // для привязки к UI, что будет возвращать пока хз
         }
     }
 
