@@ -1,5 +1,4 @@
 ﻿using MathNet.Numerics.LinearAlgebra;
-using System.ComponentModel.DataAnnotations;
 using mnd = MathNet.Numerics.LinearAlgebra.Double;
 
 namespace MGANN
@@ -206,24 +205,98 @@ namespace MGANN
                 var patch = el.Item1;
                 int h = el.Item2;
                 int w = el.Item3;
-                //max_pooling_output[h,w] = np.amax(patch, axis=(0,1))
+                List<double> maxList = new();
+                for (int index = 0; index < patch[0].ColumnCount; index++)
+                {
+                    double max = -99999;
+                    for (int i = 0; i < patch.Count; i++)
+                    {
+                        for (int j = 0; j < patch[0].RowCount; j++)
+                        {
+                            if (patch[i][j, index] > max)
+                            {
+                                max = patch[i][j, index];
+                            }
+                        }
+                    }
+                    maxList.Add(max);
+                }
+                
+                for (int i = 0; i < MaxPoolingOutput[0].ColumnCount; i++)
+                {
+                    MaxPoolingOutput[h][w, i] = maxList[i];
+                }
             }
 
             return MaxPoolingOutput;
         }
 
-        void BackPropogation()
+        List<Matrix<double>> BackPropogation(List<Matrix<double>> dE_dY)
         {
+            List<Matrix<double>> dE_dK = new();
+            for (int i = 0; i < image.Count; i++)
+            {
+                dE_dK.Add(mnd.DenseMatrix.Create(image[0].RowCount, image[0].ColumnCount, 0));
+            }
 
+            var patches = PatchesGenerator(image);
+
+            foreach (var el in patches)
+            {
+                var patch = el.Item1;
+                int h = el.Item2;
+                int w = el.Item3;
+                int imageHeight = patch.Count;
+                int imageWidth = patch[0].RowCount;
+                int kernelNum = patch[0].ColumnCount;
+                List<double> maxList = new();
+                for (int index = 0; index < kernelNum; index++)
+                {
+                    double max = -99999;
+                    for (int i = 0; i < imageHeight; i++)
+                    {
+                        for (int j = 0; j < imageWidth; j++)
+                        {
+                            if (patch[i][j, index] > max)
+                            {
+                                max = patch[i][j, index];
+                            }
+                        }
+                    }
+                    maxList.Add(max);
+                }
+
+                for (int i = 0; i < imageHeight; i++)
+                {
+                    for (int j = 0; j < imageWidth; j++)
+                    {
+                        for (int k = 0; k < kernelNum; k++)
+                        {
+                            if (patch[i][j, k] == maxList[k])
+                            {
+                                dE_dK[h * kernelSize + i][w * kernelSize + j, k] = dE_dY[h][w, k];
+                            }
+                        }
+                    }
+                }
+
+                return dE_dK;
+            }
+            return dE_dK;
         }
 
     }
 
     public class SoftMaxLayer
     {
-        public SoftMaxLayer()
-        {
+        Matrix<double> Weights;
+        Vector<double> Biases;
 
+        public SoftMaxLayer(int inputCount, int outputCount)
+        {
+            Biases = mnd.DenseVector.Create(outputCount, 0);
+            Weights = mnd.DenseMatrix.Create(inputCount, outputCount, 0);
+            SetWeightsRandom(inputCount);
         }
 
         void ForwardPropogation()
@@ -234,6 +307,18 @@ namespace MGANN
         void BackPropogation()
         {
 
+        }
+
+        void SetWeightsRandom(int inputCount)
+        {
+            Random rand = new();
+            for (int i = 0; i < Weights.RowCount; i++)
+            {
+                for (int j = 0; j < Weights.ColumnCount; j++)
+                {
+                    Weights[i, j] = (2 * rand.NextDouble() - 1) / inputCount;
+                }
+            }
         }
     }
 }
