@@ -35,14 +35,14 @@
             this.labelFilePath = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // label_MGANN
+            // labelMGANN
             // 
             this.labelMGANN.CausesValidation = false;
             this.labelMGANN.Dock = System.Windows.Forms.DockStyle.Top;
             this.labelMGANN.Font = new System.Drawing.Font("Ravie", 48F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.labelMGANN.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(185)))), ((int)(((byte)(156)))), ((int)(((byte)(121)))));
             this.labelMGANN.Location = new System.Drawing.Point(0, 0);
-            this.labelMGANN.Name = "label_MGANN";
+            this.labelMGANN.Name = "labelMGANN";
             this.labelMGANN.Size = new System.Drawing.Size(675, 105);
             this.labelMGANN.TabIndex = 0;
             this.labelMGANN.Text = "MGANN";
@@ -108,6 +108,7 @@
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "Form1";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "MGANN";
             this.ResumeLayout(false);
             this.PerformLayout();

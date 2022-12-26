@@ -51,7 +51,7 @@
             this.labelAnalyze.Text = "Анализ";
             this.labelAnalyze.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // answerLabel
+            // labelAnswer
             // 
             this.labelAnswer.AutoSize = true;
             this.labelAnswer.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -59,12 +59,12 @@
             this.labelAnswer.ForeColor = System.Drawing.Color.White;
             this.labelAnswer.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.labelAnswer.Location = new System.Drawing.Point(12, 56);
-            this.labelAnswer.Name = "answerLabel";
+            this.labelAnswer.Name = "labelAnswer";
             this.labelAnswer.Size = new System.Drawing.Size(218, 41);
             this.labelAnswer.TabIndex = 2;
             this.labelAnswer.Text = "Результат:";
             // 
-            // timeLabel
+            // labelTime
             // 
             this.labelTime.AutoSize = true;
             this.labelTime.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -72,7 +72,7 @@
             this.labelTime.ForeColor = System.Drawing.Color.White;
             this.labelTime.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.labelTime.Location = new System.Drawing.Point(12, 271);
-            this.labelTime.Name = "timeLabel";
+            this.labelTime.Name = "labelTime";
             this.labelTime.Size = new System.Drawing.Size(332, 34);
             this.labelTime.TabIndex = 3;
             this.labelTime.Text = "Время анализа (мс):";
@@ -88,7 +88,7 @@
             this.pictureBoxSpectrogram.TabIndex = 4;
             this.pictureBoxSpectrogram.TabStop = false;
             // 
-            // labelResultGenre
+            // labelAnswerGiven
             // 
             this.labelAnswerGiven.AutoSize = true;
             this.labelAnswerGiven.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -96,7 +96,7 @@
             this.labelAnswerGiven.ForeColor = System.Drawing.Color.White;
             this.labelAnswerGiven.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.labelAnswerGiven.Location = new System.Drawing.Point(224, 56);
-            this.labelAnswerGiven.Name = "labelResultGenre";
+            this.labelAnswerGiven.Name = "labelAnswerGiven";
             this.labelAnswerGiven.Size = new System.Drawing.Size(0, 41);
             this.labelAnswerGiven.TabIndex = 5;
             // 
@@ -109,7 +109,7 @@
             this.labelTimeEnlapsed.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.labelTimeEnlapsed.Location = new System.Drawing.Point(338, 271);
             this.labelTimeEnlapsed.Name = "labelTimeEnlapsed";
-            this.labelTimeEnlapsed.Size = new System.Drawing.Size(0, 34);
+            this.labelTimeEnlapsed.Size = new System.Drawing.Size(35, 34);
             this.labelTimeEnlapsed.TabIndex = 6;
             this.labelTimeEnlapsed.Text = "0";
             // 
@@ -156,6 +156,7 @@
             this.Controls.Add(this.labelAnalyze);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "AnalyzingForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "MGANN";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.AnalyzingForm_FormClosed);
             this.Load += new System.EventHandler(this.AnalyzingForm_Load);
