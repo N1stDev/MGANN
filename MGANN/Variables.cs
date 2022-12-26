@@ -4,6 +4,20 @@ namespace MGANN
 {
     public static class VARIABLES
     {
+        public enum GENRES_ENUM
+        {
+            BLUES,
+            CLASSICAL,
+            COUTRY,
+            DISCO,
+            HIPHOP,
+            JAZZ,
+            METAL,
+            POP,
+            REGGAE,
+            ROCK
+        }
+
         public static readonly int XSIZE = 51;
         public static readonly int YSIZE = 362;
         public static readonly int SIZE = 40;
