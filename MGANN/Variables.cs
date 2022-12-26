@@ -6,16 +6,18 @@ namespace MGANN
     {
         public static readonly int XSIZE = 51;
         public static readonly int YSIZE = 362;
-        public static readonly int SIZE = 720;
+        public static readonly int SIZE = 40;
         public static readonly string RESOURCE_PATH = Environment.CurrentDirectory;
         public static readonly string MUSIC_PATH;
         public static readonly string SPECTROGRAMS_PATH;
+        public static readonly string NETWORK_DATA_PATH = Environment.CurrentDirectory;
         public static readonly string[] GENRES = {"", "", "", "", "", "", "", "", "", ""};
-        public static readonly int EnoughAccuracy = 30;
+        public static readonly int EnoughAccuracy = 20;
 
         static VARIABLES()
         {
             RESOURCE_PATH = RESOURCE_PATH.Substring(0, RESOURCE_PATH.Length - 16) + "resources";
+            NETWORK_DATA_PATH = NETWORK_DATA_PATH.Substring(0, NETWORK_DATA_PATH.Length - 16) + "networkData";
             MUSIC_PATH = RESOURCE_PATH + "\\music";
             SPECTROGRAMS_PATH = RESOURCE_PATH + "\\spectrograms";
             GENRES[0] = "\\blues\\";

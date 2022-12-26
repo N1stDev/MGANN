@@ -16,4 +16,8 @@
     <PackageReference Include="Spectrogram" Version="1.6.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="networkData\" />
+  </ItemGroup>
+
 </Project>

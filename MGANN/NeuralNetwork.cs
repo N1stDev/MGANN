@@ -8,10 +8,11 @@ namespace MGANN
 {
     public class CNN
     {
-        Tuple<ConvolutionLayer, MaxPoolingLayer, SoftMaxLayer> layers;
-        public CNN()
+        public Tuple<ConvolutionLayer, MaxPoolingLayer, SoftMaxLayer> layers;
+        public CNN(int kernelsNum=16, int kernelsSize=3, int poolingKernelSize = 2, int outputSize=10)
         {
-            layers = new(new ConvolutionLayer(16, 3), new MaxPoolingLayer(2), new SoftMaxLayer(2062096, 10)); //((size-2)/2  ** 2) * 16
+            int softInputSize = (int)Math.Pow((VARIABLES.SIZE - kernelsSize + 1) / 2, 2) * kernelsNum;
+            layers = new(new ConvolutionLayer(kernelsNum, kernelsSize), new MaxPoolingLayer(poolingKernelSize), new SoftMaxLayer(softInputSize, outputSize));
 
         }
         (Vector<double>, double, int) RunForward(Matrix<double> image, int label)
@@ -65,17 +66,84 @@ namespace MGANN
 
         public void SaveConfiguration()
         {
-            // сохранить конфигурацию
+            Console.WriteLine("Saving...");
+            var kernels = layers.Item1.kernels;
+            using (StreamWriter sw = new(VARIABLES.NETWORK_DATA_PATH + "\\kernels.txt"))
+            {
+                for (int i = 0; i < kernels.Count; i++)
+                {
+                    for (int j = 0; j < kernels[0].RowCount; j++)
+                    {
+                        for (int k = 0; k < kernels[0].ColumnCount; k++)
+                        {
+                            sw.WriteLine(kernels[i][j, k]);
+                        }
+                    }
+                }
+            }
+
+            var weights = layers.Item3.Weights;
+            var biases = layers.Item3.Biases;
+
+            using (StreamWriter sw = new(VARIABLES.NETWORK_DATA_PATH + "\\weights.txt"))
+            {
+                for (int i = 0; i < weights.RowCount; i++)
+                {
+                    for (int j = 0; j < weights.ColumnCount; j++)
+                    {
+                        sw.WriteLine(weights[i, j]);
+                    }
+                }
+            }
+
+            using (StreamWriter sw = new(VARIABLES.NETWORK_DATA_PATH + "\\biases.txt"))
+            {
+                for (int i = 0; i < biases.Count; i++)
+                {
+                    sw.WriteLine(biases[i]);
+                }
+            }
         }
 
         public void UploadConfiguration()
         {
-            // загрузить конфигурацию
+            using (StreamReader sr = new(VARIABLES.NETWORK_DATA_PATH + "\\kernels.txt"))
+            {
+                for (int i = 0; i < layers.Item1.kernels.Count; i++)
+                {
+                    for (int j = 0; j < layers.Item1.kernels[0].RowCount; j++)
+                    {
+                        for (int k = 0; k < layers.Item1.kernels[0].ColumnCount; k++)
+                        {
+                            layers.Item1.kernels[i][j, k] = double.Parse(sr.ReadLine());
+                        }
+                    }
+                }
+            }
+
+            using (StreamReader sr = new(VARIABLES.NETWORK_DATA_PATH + "\\weights.txt"))
+            {
+                for (int i = 0; i < layers.Item3.Weights.RowCount; i++)
+                {
+                    for (int j = 0; j < layers.Item3.Weights.ColumnCount; j++)
+                    {
+                        layers.Item3.Weights[i, j] = double.Parse(sr.ReadLine());
+                    }
+                }
+            }
+
+            using (StreamReader sr = new(VARIABLES.NETWORK_DATA_PATH + "\\biases.txt"))
+            {
+                for (int i = 0; i < layers.Item3.Biases.Count; i++)
+                {
+                    layers.Item3.Biases[i] = double.Parse(sr.ReadLine());
+                }
+            }
+
         }
 
         string DetectGenre(string ImagePath)
         {
-            UploadConfiguration();
             Bitmap image = new(ImagePath);
             image = new Bitmap(image, new Size(VARIABLES.SIZE, VARIABLES.SIZE));
             Matrix<double> singleCase = mnd.DenseMatrix.Create(VARIABLES.SIZE, VARIABLES.SIZE, 0);
@@ -97,7 +165,7 @@ namespace MGANN
     public class ConvolutionLayer
     {
         int kernelNum, kernelSize;
-        List<Matrix<double>> kernels;
+        public List<Matrix<double>> kernels;
         Matrix<double> image;
 
         public ConvolutionLayer(int kernelNum, int kernelSize)
@@ -363,8 +431,8 @@ namespace MGANN
 
     public class SoftMaxLayer
     {
-        Matrix<double> Weights;
-        Vector<double> Biases;
+        public Matrix<double> Weights;
+        public Vector<double> Biases;
         (int, int, int) size;
         Vector<double> inputVector;
         Vector<double> outputVector;
