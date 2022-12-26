@@ -3,10 +3,10 @@ using System.IO;
 
 namespace MGANN
 {
-    static class Spectrogramm
+    public static class Spectrogramm
     {
         /* Функция чтения данных из .WAV файла */
-        static (double[] audio, int sampleRate) ReadWavMono(string filePath, double multiplier = 16_000)
+        public static (double[] audio, int sampleRate) ReadWavMono(string filePath, double multiplier = 16_000)
         {
             using var afr = new NAudio.Wave.AudioFileReader(filePath);
 

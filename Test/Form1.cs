@@ -1,4 +1,6 @@
 using System.Diagnostics;
+using MGANN;
+using Spectrogram;
 
 namespace Test
 {

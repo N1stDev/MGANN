@@ -142,9 +142,9 @@ namespace MGANN
 
         }
 
-        string DetectGenre(string ImagePath)
+        public string DetectGenre(Bitmap spectrogram)
         {
-            Bitmap image = new(ImagePath);
+            Bitmap image = new(spectrogram);
             image = new Bitmap(image, new Size(VARIABLES.SIZE, VARIABLES.SIZE));
             Matrix<double> singleCase = mnd.DenseMatrix.Create(VARIABLES.SIZE, VARIABLES.SIZE, 0);
 
