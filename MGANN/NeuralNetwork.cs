@@ -51,7 +51,7 @@ namespace MGANN
             return gradientBack4;
         }
 
-        public (double, int) Train(Matrix<double> image, int label, double alpha=0.00001)
+        public (double, int) Train(Matrix<double> image, int label, double alpha=0.0005)
         {
             (Vector<double>, double, int) resForward = RunForward(image, label);
 
