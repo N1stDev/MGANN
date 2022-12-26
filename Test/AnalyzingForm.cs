@@ -39,34 +39,47 @@ namespace Test
 
             pictureBoxSpectrogram.Image = FormsSharedData.bmpSpectrogram;
 
-            Thread processAnalyze = new Thread(ProcessAnalyze);
-            processAnalyze.IsBackground = true;
+            StringBuilder sbFileName = new(FormsSharedData.loadedFilePath);
+
+            int trimPos = FormsSharedData.loadedFilePath.LastIndexOf('\\');
+
+            if (trimPos != -1)
+            {
+                sbFileName.Remove(0, trimPos + 1);
+            }
+
+            labelFileName.Text = sbFileName.ToString();
 
             Stopwatch sw = new();
 
             sw.Start();
-            FormsSharedData.genreString = FormsSharedData.neuralNetwork.DetectGenre(FormsSharedData.bmpSpectrogram);
+            var accuracyList = FormsSharedData.neuralNetwork.DetectGenre(FormsSharedData.bmpSpectrogram);
             sw.Stop();
 
-            StringBuilder sb = new(FormsSharedData.genreString);
-            sb = sb.Remove(sb.Length - 1, 1).Remove(0, 1);
+            double totalAccuracy = accuracyList.Sum();
 
-            labelResultGenre.Text = sb.ToString();
+            Dictionary<double, string> genre_acuracyDict = new();
+
+            for (int i = 0; i < accuracyList.Count; i++)
+            {
+                genre_acuracyDict.Add(accuracyList[i], ((VARIABLES.GENRES_ENUM)i).ToString());
+            }
+
+            var sortedDict = from genre in genre_acuracyDict orderby genre.Key descending select genre;
+
+            richTextBoxAccuracyList.Text = "MGANN считает что аудиофайл:\n";
+
+            foreach (var g in sortedDict)
+            {
+                richTextBoxAccuracyList.Text += $"на {Math.Round((g.Key / totalAccuracy) * 100, 1)}% {g.Value}\n";
+            }
 
             labelTimeEnlapsed.Text = sw.ElapsedMilliseconds.ToString();
-
-            //processAnalyze.Start();
-            //timer1.Start();
         }
 
         private void AnalyzingForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             FormsSharedData.mainForm.Show();
-        }
-
-        private void ProcessAnalyze()
-        {
-            FormsSharedData.genreString = FormsSharedData.neuralNetwork.DetectGenre(FormsSharedData.bmpSpectrogram);
         }
 
         private void timeLabel_Click(object sender, EventArgs e)

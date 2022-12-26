@@ -28,30 +28,25 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.label_MGANN = new System.Windows.Forms.Label();
+            this.labelMGANN = new System.Windows.Forms.Label();
             this.buttonFileAdd = new System.Windows.Forms.Button();
             this.buttonStart = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.labelFilePath = new System.Windows.Forms.Label();
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.информацияToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.оПроектеToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.репозиторийGitHubToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // label_MGANN
+            // labelMGANN
             // 
-            this.label_MGANN.CausesValidation = false;
-            this.label_MGANN.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label_MGANN.Font = new System.Drawing.Font("Microsoft Sans Serif", 48F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label_MGANN.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(185)))), ((int)(((byte)(156)))), ((int)(((byte)(121)))));
-            this.label_MGANN.Location = new System.Drawing.Point(0, 24);
-            this.label_MGANN.Name = "label_MGANN";
-            this.label_MGANN.Size = new System.Drawing.Size(675, 105);
-            this.label_MGANN.TabIndex = 0;
-            this.label_MGANN.Text = "MGANN";
-            this.label_MGANN.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.labelMGANN.CausesValidation = false;
+            this.labelMGANN.Dock = System.Windows.Forms.DockStyle.Top;
+            this.labelMGANN.Font = new System.Drawing.Font("Ravie", 48F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.labelMGANN.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(185)))), ((int)(((byte)(156)))), ((int)(((byte)(121)))));
+            this.labelMGANN.Location = new System.Drawing.Point(0, 0);
+            this.labelMGANN.Name = "labelMGANN";
+            this.labelMGANN.Size = new System.Drawing.Size(675, 105);
+            this.labelMGANN.TabIndex = 0;
+            this.labelMGANN.Text = "MGANN";
+            this.labelMGANN.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // buttonFileAdd
             // 
@@ -98,39 +93,6 @@
             this.labelFilePath.TabIndex = 3;
             this.labelFilePath.Text = "Нет загруженного файла";
             // 
-            // menuStrip1
-            // 
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.информацияToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(675, 24);
-            this.menuStrip1.TabIndex = 4;
-            this.menuStrip1.Text = "menuStrip1";
-            // 
-            // информацияToolStripMenuItem
-            // 
-            this.информацияToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.оПроектеToolStripMenuItem,
-            this.репозиторийGitHubToolStripMenuItem});
-            this.информацияToolStripMenuItem.Name = "информацияToolStripMenuItem";
-            this.информацияToolStripMenuItem.Size = new System.Drawing.Size(93, 20);
-            this.информацияToolStripMenuItem.Text = "Информация";
-            // 
-            // оПроектеToolStripMenuItem
-            // 
-            this.оПроектеToolStripMenuItem.Name = "оПроектеToolStripMenuItem";
-            this.оПроектеToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
-            this.оПроектеToolStripMenuItem.Text = "О проекте";
-            this.оПроектеToolStripMenuItem.Click += new System.EventHandler(this.оПроектеToolStripMenuItem_Click);
-            // 
-            // репозиторийGitHubToolStripMenuItem
-            // 
-            this.репозиторийGitHubToolStripMenuItem.Name = "репозиторийGitHubToolStripMenuItem";
-            this.репозиторийGitHubToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
-            this.репозиторийGitHubToolStripMenuItem.Text = "Репозиторий GitHub";
-            this.репозиторийGitHubToolStripMenuItem.Click += new System.EventHandler(this.репозиторийGitHubToolStripMenuItem_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -142,14 +104,12 @@
             this.Controls.Add(this.labelFilePath);
             this.Controls.Add(this.buttonStart);
             this.Controls.Add(this.buttonFileAdd);
-            this.Controls.Add(this.label_MGANN);
-            this.Controls.Add(this.menuStrip1);
+            this.Controls.Add(this.labelMGANN);
             this.DoubleBuffered = true;
-            this.MainMenuStrip = this.menuStrip1;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "Form1";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "MGANN";
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -158,14 +118,10 @@
 
         #endregion
 
-        private Label label_MGANN;
+        private Label labelMGANN;
         private Button buttonFileAdd;
         private Button buttonStart;
         private OpenFileDialog openFileDialog1;
         private Label labelFilePath;
-        private MenuStrip menuStrip1;
-        private ToolStripMenuItem информацияToolStripMenuItem;
-        private ToolStripMenuItem оПроектеToolStripMenuItem;
-        private ToolStripMenuItem репозиторийGitHubToolStripMenuItem;
     }
 }

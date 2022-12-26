@@ -33,13 +33,13 @@ namespace MGANN
             return (output4, loss, success);
         }
 
-        int GetGenre(Matrix<double> image)
+        Vector<double> GetGenre(Matrix<double> image)
         {
             Matrix<double> output1 = image.Divide(255);
             List<Matrix<double>> output2 = layers.Item1.ForwardPropogation(output1);
             List<Matrix<double>> output3 = layers.Item2.ForwardPropogation(output2);
             Vector<double> output4 = layers.Item3.ForwardPropogation(output3);
-            return output4.MaximumIndex();
+            return output4;
         }
 
         List<Matrix<double>> BackPropogation(Vector<double> gradient, double alpha)
@@ -143,7 +143,7 @@ namespace MGANN
 
         }
 
-        public string DetectGenre(Bitmap spectrogram)
+        public Vector<double> DetectGenre(Bitmap spectrogram)
         {
             Bitmap image = new(spectrogram);
             image = new Bitmap(image, new Size(VARIABLES.SIZE, VARIABLES.SIZE));
@@ -157,9 +157,9 @@ namespace MGANN
                 }
             }
 
-            int genreIndex = GetGenre(singleCase);
+            Vector<double> accuracyList = GetGenre(singleCase);
 
-            return VARIABLES.GENRES[genreIndex];
+            return accuracyList;
         }
     }
 
