@@ -26,7 +26,7 @@ namespace MGANN
         public static readonly string SPECTROGRAMS_PATH;
         public static readonly string NETWORK_DATA_PATH = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.Parent.FullName + $"\\MGANN\\networkData";
         public static readonly string[] GENRES = {"", "", "", "", "", "", "", "", "", ""};
-        public static readonly int EnoughAccuracy = 50;
+        public static readonly int EnoughAccuracy = 70;
 
         static VARIABLES()
         {

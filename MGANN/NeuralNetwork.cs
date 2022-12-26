@@ -1,6 +1,7 @@
 ﻿using MathNet.Numerics.LinearAlgebra;
 using System;
 using System.Drawing;
+using Tensorflow;
 using mnd = MathNet.Numerics.LinearAlgebra.Double;
 
 
@@ -9,13 +10,13 @@ namespace MGANN
     public class CNN
     {
         public Tuple<ConvolutionLayer, MaxPoolingLayer, SoftMaxLayer> layers;
+               
         public CNN(int kernelsNum=16, int kernelsSize=3, int poolingKernelSize = 2, int outputSize=10)
         {
             int softInputSize = (int)Math.Pow((VARIABLES.SIZE - kernelsSize + 1) / 2, 2) * kernelsNum;
             layers = new(new ConvolutionLayer(kernelsNum, kernelsSize), new MaxPoolingLayer(poolingKernelSize), new SoftMaxLayer(softInputSize, outputSize));
-
         }
-        (Vector<double>, double, int) RunForward(Matrix<double> image, int label)
+        public (Vector<double>, double, int) RunForward(Matrix<double> image, int label)
         {
             Matrix<double> output1 = image.Divide(255);
             List<Matrix<double>> output2 = layers.Item1.ForwardPropogation(output1);
@@ -51,7 +52,7 @@ namespace MGANN
             return gradientBack4;
         }
 
-        public (double, int) Train(Matrix<double> image, int label, double alpha=0.0005)
+        public (double, int) Train(Matrix<double> image, int label, double alpha=0.00009)
         {
             (Vector<double>, double, int) resForward = RunForward(image, label);
 
