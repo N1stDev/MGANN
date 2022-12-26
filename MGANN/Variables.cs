@@ -6,16 +6,16 @@ namespace MGANN
     {
         public enum GENRES_ENUM
         {
-            BLUES,
-            CLASSICAL,
-            COUTRY,
-            DISCO,
-            HIPHOP,
-            JAZZ,
-            METAL,
-            POP,
-            REGGAE,
-            ROCK
+            Блюз,
+            Классическсая,
+            Кантри,
+            Диско,
+            ХипХоп,
+            Джаз,
+            Метал,
+            Поп,
+            Рэгги,
+            Рок
         }
 
         public static readonly int XSIZE = 51;
