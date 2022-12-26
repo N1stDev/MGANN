@@ -29,10 +29,10 @@
         private void InitializeComponent()
         {
             this.labelAnalyze = new System.Windows.Forms.Label();
-            this.answerLabel = new System.Windows.Forms.Label();
-            this.timeLabel = new System.Windows.Forms.Label();
+            this.labelAnswer = new System.Windows.Forms.Label();
+            this.labelTime = new System.Windows.Forms.Label();
             this.pictureBoxSpectrogram = new System.Windows.Forms.PictureBox();
-            this.labelResultGenre = new System.Windows.Forms.Label();
+            this.labelAnswerGiven = new System.Windows.Forms.Label();
             this.labelTimeEnlapsed = new System.Windows.Forms.Label();
             this.richTextBoxAccuracyList = new System.Windows.Forms.RichTextBox();
             this.labelFileName = new System.Windows.Forms.Label();
@@ -53,30 +53,30 @@
             // 
             // answerLabel
             // 
-            this.answerLabel.AutoSize = true;
-            this.answerLabel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.answerLabel.Font = new System.Drawing.Font("Georgia", 26.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.answerLabel.ForeColor = System.Drawing.Color.White;
-            this.answerLabel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.answerLabel.Location = new System.Drawing.Point(12, 56);
-            this.answerLabel.Name = "answerLabel";
-            this.answerLabel.Size = new System.Drawing.Size(218, 41);
-            this.answerLabel.TabIndex = 2;
-            this.answerLabel.Text = "Результат:";
+            this.labelAnswer.AutoSize = true;
+            this.labelAnswer.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.labelAnswer.Font = new System.Drawing.Font("Georgia", 26.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.labelAnswer.ForeColor = System.Drawing.Color.White;
+            this.labelAnswer.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.labelAnswer.Location = new System.Drawing.Point(12, 56);
+            this.labelAnswer.Name = "answerLabel";
+            this.labelAnswer.Size = new System.Drawing.Size(218, 41);
+            this.labelAnswer.TabIndex = 2;
+            this.labelAnswer.Text = "Результат:";
             // 
             // timeLabel
             // 
-            this.timeLabel.AutoSize = true;
-            this.timeLabel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.timeLabel.Font = new System.Drawing.Font("Georgia", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.timeLabel.ForeColor = System.Drawing.Color.White;
-            this.timeLabel.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.timeLabel.Location = new System.Drawing.Point(12, 271);
-            this.timeLabel.Name = "timeLabel";
-            this.timeLabel.Size = new System.Drawing.Size(332, 34);
-            this.timeLabel.TabIndex = 3;
-            this.timeLabel.Text = "Время анализа (мс):";
-            this.timeLabel.Click += new System.EventHandler(this.timeLabel_Click);
+            this.labelTime.AutoSize = true;
+            this.labelTime.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.labelTime.Font = new System.Drawing.Font("Georgia", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.labelTime.ForeColor = System.Drawing.Color.White;
+            this.labelTime.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.labelTime.Location = new System.Drawing.Point(12, 271);
+            this.labelTime.Name = "timeLabel";
+            this.labelTime.Size = new System.Drawing.Size(332, 34);
+            this.labelTime.TabIndex = 3;
+            this.labelTime.Text = "Время анализа (мс):";
+            this.labelTime.Click += new System.EventHandler(this.timeLabel_Click);
             // 
             // pictureBoxSpectrogram
             // 
@@ -90,15 +90,15 @@
             // 
             // labelResultGenre
             // 
-            this.labelResultGenre.AutoSize = true;
-            this.labelResultGenre.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.labelResultGenre.Font = new System.Drawing.Font("Georgia", 26.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.labelResultGenre.ForeColor = System.Drawing.Color.White;
-            this.labelResultGenre.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.labelResultGenre.Location = new System.Drawing.Point(224, 56);
-            this.labelResultGenre.Name = "labelResultGenre";
-            this.labelResultGenre.Size = new System.Drawing.Size(0, 41);
-            this.labelResultGenre.TabIndex = 5;
+            this.labelAnswerGiven.AutoSize = true;
+            this.labelAnswerGiven.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.labelAnswerGiven.Font = new System.Drawing.Font("Georgia", 26.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.labelAnswerGiven.ForeColor = System.Drawing.Color.White;
+            this.labelAnswerGiven.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.labelAnswerGiven.Location = new System.Drawing.Point(224, 56);
+            this.labelAnswerGiven.Name = "labelResultGenre";
+            this.labelAnswerGiven.Size = new System.Drawing.Size(0, 41);
+            this.labelAnswerGiven.TabIndex = 5;
             // 
             // labelTimeEnlapsed
             // 
@@ -111,6 +111,7 @@
             this.labelTimeEnlapsed.Name = "labelTimeEnlapsed";
             this.labelTimeEnlapsed.Size = new System.Drawing.Size(0, 34);
             this.labelTimeEnlapsed.TabIndex = 6;
+            this.labelTimeEnlapsed.Text = "0";
             // 
             // richTextBoxAccuracyList
             // 
@@ -148,10 +149,10 @@
             this.Controls.Add(this.labelFileName);
             this.Controls.Add(this.richTextBoxAccuracyList);
             this.Controls.Add(this.labelTimeEnlapsed);
-            this.Controls.Add(this.labelResultGenre);
+            this.Controls.Add(this.labelAnswerGiven);
             this.Controls.Add(this.pictureBoxSpectrogram);
-            this.Controls.Add(this.timeLabel);
-            this.Controls.Add(this.answerLabel);
+            this.Controls.Add(this.labelTime);
+            this.Controls.Add(this.labelAnswer);
             this.Controls.Add(this.labelAnalyze);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "AnalyzingForm";
@@ -167,10 +168,10 @@
         #endregion
 
         private Label labelAnalyze;
-        private Label answerLabel;
-        private Label timeLabel;
+        private Label labelAnswer;
+        private Label labelTime;
         private PictureBox pictureBoxSpectrogram;
-        private Label labelResultGenre;
+        private Label labelAnswerGiven;
         private Label labelTimeEnlapsed;
         private RichTextBox richTextBoxAccuracyList;
         private Label labelFileName;

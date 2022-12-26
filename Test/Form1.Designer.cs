@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.label_MGANN = new System.Windows.Forms.Label();
+            this.labelMGANN = new System.Windows.Forms.Label();
             this.buttonFileAdd = new System.Windows.Forms.Button();
             this.buttonStart = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
@@ -37,16 +37,16 @@
             // 
             // label_MGANN
             // 
-            this.label_MGANN.CausesValidation = false;
-            this.label_MGANN.Dock = System.Windows.Forms.DockStyle.Top;
-            this.label_MGANN.Font = new System.Drawing.Font("Ravie", 48F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label_MGANN.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(185)))), ((int)(((byte)(156)))), ((int)(((byte)(121)))));
-            this.label_MGANN.Location = new System.Drawing.Point(0, 0);
-            this.label_MGANN.Name = "label_MGANN";
-            this.label_MGANN.Size = new System.Drawing.Size(675, 105);
-            this.label_MGANN.TabIndex = 0;
-            this.label_MGANN.Text = "MGANN";
-            this.label_MGANN.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.labelMGANN.CausesValidation = false;
+            this.labelMGANN.Dock = System.Windows.Forms.DockStyle.Top;
+            this.labelMGANN.Font = new System.Drawing.Font("Ravie", 48F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.labelMGANN.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(185)))), ((int)(((byte)(156)))), ((int)(((byte)(121)))));
+            this.labelMGANN.Location = new System.Drawing.Point(0, 0);
+            this.labelMGANN.Name = "label_MGANN";
+            this.labelMGANN.Size = new System.Drawing.Size(675, 105);
+            this.labelMGANN.TabIndex = 0;
+            this.labelMGANN.Text = "MGANN";
+            this.labelMGANN.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // buttonFileAdd
             // 
@@ -104,7 +104,7 @@
             this.Controls.Add(this.labelFilePath);
             this.Controls.Add(this.buttonStart);
             this.Controls.Add(this.buttonFileAdd);
-            this.Controls.Add(this.label_MGANN);
+            this.Controls.Add(this.labelMGANN);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "Form1";
@@ -117,7 +117,7 @@
 
         #endregion
 
-        private Label label_MGANN;
+        private Label labelMGANN;
         private Button buttonFileAdd;
         private Button buttonStart;
         private OpenFileDialog openFileDialog1;
