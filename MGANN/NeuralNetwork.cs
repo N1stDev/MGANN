@@ -1,5 +1,6 @@
 ﻿using MathNet.Numerics.LinearAlgebra;
 using System;
+using System.Drawing;
 using mnd = MathNet.Numerics.LinearAlgebra.Double;
 
 
@@ -10,7 +11,7 @@ namespace MGANN
         Tuple<ConvolutionLayer, MaxPoolingLayer, SoftMaxLayer> layers;
         public CNN()
         {
-            layers = new(new ConvolutionLayer(16, 3), new MaxPoolingLayer(2), new SoftMaxLayer(65536, 10));
+            layers = new(new ConvolutionLayer(16, 3), new MaxPoolingLayer(2), new SoftMaxLayer(2062096, 10)); //((size-2)/2  ** 2) * 16
 
         }
         (Vector<double>, double, int) RunForward(Matrix<double> image, int label)
@@ -30,6 +31,15 @@ namespace MGANN
             return (output4, loss, success);
         }
 
+        int GetGenre(Matrix<double> image)
+        {
+            Matrix<double> output1 = image.Divide(255);
+            List<Matrix<double>> output2 = layers.Item1.ForwardPropogation(output1);
+            List<Matrix<double>> output3 = layers.Item2.ForwardPropogation(output2);
+            Vector<double> output4 = layers.Item3.ForwardPropogation(output3);
+            return output4.MaximumIndex();
+        }
+
         List<Matrix<double>> BackPropogation(Vector<double> gradient, double alpha)
         {
             Vector<double> gradientBack1 = gradient;
@@ -40,7 +50,7 @@ namespace MGANN
             return gradientBack4;
         }
 
-        public (double, int) Train(Matrix<double> image, int label, double alpha=0.0001)
+        public (double, int) Train(Matrix<double> image, int label, double alpha=0.00001)
         {
             (Vector<double>, double, int) resForward = RunForward(image, label);
 
@@ -63,9 +73,24 @@ namespace MGANN
             // загрузить конфигурацию
         }
 
-        public void DetectGenre()
+        string DetectGenre(string ImagePath)
         {
-            // для привязки к UI, что будет возвращать пока хз
+            UploadConfiguration();
+            Bitmap image = new(ImagePath);
+            image = new Bitmap(image, new Size(VARIABLES.SIZE, VARIABLES.SIZE));
+            Matrix<double> singleCase = mnd.DenseMatrix.Create(VARIABLES.SIZE, VARIABLES.SIZE, 0);
+
+            for (int y = 0; y < singleCase.RowCount; y++)
+            {
+                for (int x = 0; x < singleCase.ColumnCount; x++)
+                {
+                    singleCase[y, x] = image.GetPixel(x, y).R;
+                }
+            }
+
+            int genreIndex = GetGenre(singleCase);
+
+            return VARIABLES.GENRES[genreIndex];
         }
     }
 

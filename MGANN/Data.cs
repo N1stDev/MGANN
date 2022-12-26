@@ -4,7 +4,7 @@ using mnd = MathNet.Numerics.LinearAlgebra.Double;
 
 namespace MGANN
 {
-    class Data
+    public class Data
     {
         public List<Matrix<double>> cases;
         public List<int> answers;

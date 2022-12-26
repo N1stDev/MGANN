@@ -43,7 +43,7 @@ namespace MGANN
                     {
                         (double[] audio, int sampleRate) = ReadWavMono(current_file);                  
                                                                     // Высота картинки ~ fftsize / 2; stepSize = sampleRate / ширина
-                        var sg = new SpectrogramGenerator(sampleRate, fftSize: 2048, stepSize: 12800, minFreq: 100, maxFreq: 4000);
+                        var sg = new SpectrogramGenerator(sampleRate, fftSize: 4096, stepSize: 820, minFreq: 100, maxFreq: 4000);
                         sg.Add(audio);
                         sg.SetColormap(Colormap.Grayscale);
 
@@ -63,6 +63,7 @@ namespace MGANN
                         index++;
                     }
                 }
+                
                 //Console.WriteLine("\n");
             }
 
