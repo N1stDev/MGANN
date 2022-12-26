@@ -30,8 +30,6 @@ namespace MGANN
 
         static VARIABLES()
         {
-            RESOURCE_PATH = RESOURCE_PATH.Substring(0, RESOURCE_PATH.Length - 16) + "resources";
-            NETWORK_DATA_PATH = NETWORK_DATA_PATH.Substring(0, NETWORK_DATA_PATH.Length - 16) + "networkData";
             MUSIC_PATH = RESOURCE_PATH + "\\music";
             SPECTROGRAMS_PATH = RESOURCE_PATH + "\\spectrograms";
             GENRES[0] = "\\blues\\";
